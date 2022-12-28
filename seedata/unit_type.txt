@@ -1,0 +1,9 @@
+Bed Sitter
+One Bedroom
+Two Bedroom
+Single Room
+Three Bedroom
+Four Bedroom
+Five Bedroom
+Six Bedroom
+Seven Bedroom

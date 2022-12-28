@@ -1,0 +1,51 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "A Property and Fleet management RESTFul API",
+    "version": "1.0.0",
+    "title": "FMS API",
+    "contact": {
+      "email": "ouda.wycliffe@gmail.com",
+      "name": "Ouda Wycliffe"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "schemes": ["http"],
+  "host": "localhost:4000",
+  "basePath": "/api/V1",
+  "paths": {
+    "/users/login": {
+      "post": {
+        "summary": "Login user",
+        "description": "The general endpoint for users to login",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "user object",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "user": {
+                  "type": "object",
+                  "$ref": "#/users/login"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful login"
+          }
+        }
+      }
+    }
+  }
+}

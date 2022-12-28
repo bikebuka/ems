@@ -1,0 +1,6 @@
+Residential|All property used for single-family or multi family housing weather in urban, suburban or rural area
+Commercial|Business property, including office space, shopping centers, stores, theaters, hotels, and parking faculties
+Mixed Use|Property that allows for two uses ,commercials and residential ,in the same building
+Industrial|Warehouse,factories,land industrial districts and power plants
+Agriculture|Farms ,timberland,ranches,and orchards
+Special Purpose|Municipal (relating to a city or town or its government body) service building and parks

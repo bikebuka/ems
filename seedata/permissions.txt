@@ -1,0 +1,24 @@
+PERMISSION_CREATE|Lets user create a new permission
+PERMISSION_EDIT|Lets user update permission
+PERMISSION_DELETE|Lets user delete/deactivate permission
+PERMISSION_VIEW|Lets user see a list of all permission
+PERMISSION_ASSIGN|Lets user assign permissions to other users
+PERMISSION_REVOKE|Lets user remove permissions assigned to other users
+AGENCY_CREATE|Lets user register a new agency
+AGENCY_UPDATE|Lets user update agency
+AGENCY_DELETE|Lets user delete/deactivate agency
+AGENCY_VIEW|Lets user view a list of all agencies
+USER_REGISTER|Lets user register other users
+USER_EDIT|Lets user update other user information
+USER_DELETE|Lets user delete/deactivate other users
+USER_VIEW|Lets user view a list of all other users
+PROPERTY_CREATE|Lets user create a new property entry
+PROPERTY_EDIT|Lets user update property information
+PROPERTY_DELETE|Lets user delete/deactivate a property
+PROPERTY_VIEW|Lets user view a list of all properties
+ROLE_CREATE|Lets user create a new role
+ROLE_EDIT|Lets user edit existing role entry
+ROLE_DELETE|Lets user delete/deactivate role entry
+ROLE_VIEW|Lets user view all roles in the system
+MAP_ROLE_TO_PERMISSION|Lets user map a role and and permission
+DELETE_ROLE_PERMISSION_MAP|Lets user remove a role and permission mapping
