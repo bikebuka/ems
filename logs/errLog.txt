@@ -569,3 +569,18 @@ notNull Violation: ProfilePicture.file_size cannot be null)}
 20221230	12:02:43	8518124f-ff8d-4e4f-af70-793eecbe3d09	{"username":"username: jumamiller is already taken","email_address":"Email: jumamiller@yahoo.com is already taken"}: username: jumamiller is already taken,Email: jumamiller@yahoo.com is already taken)}
 20221230	12:03:05	5a2631c4-2df3-4a56-80ac-be80e6bc4a3e	{"username":"username: jumamiller is already taken"}: username: jumamiller is already taken)}
 20221230	12:35:32	e3014afc-a206-485f-901e-4bc6fd64dad6	[]: buildBasicInfo.buildPagedList is not a function)}
+20221230	17:47:42	0a55c5ad-8119-438d-9217-a1e613ab929f	[]: Access token is expired)}
+20221230	17:47:42	37115825-9de4-4ed0-ae03-8d5d45c28f6f	[]: Access token is expired)}
+20221230	17:47:42	2d4caa5a-56d3-4215-b39d-9ee6a2b5fc18	[]: Access token is expired)}
+20221230	17:47:42	0c96dd68-472a-48af-ba97-9a9f6c82ce5d	[]: Access token is expired)}
+20221230	17:47:51	228b1f0d-cc16-483c-a0e7-487352fa3c3b	[]: Access token is expired)}
+20221230	17:47:51	39a55028-35f7-4de1-bc6c-5fdb003fe5bd	[]: Access token is expired)}
+20221230	17:48:40	906d6393-8277-42b1-aea5-c7abe99ff711	[]: Access token is expired)}
+20221230	17:48:44	fab711e3-848e-4fb1-ae33-3d9cf860b4a6	[]: Access token is expired)}
+20221230	17:49:59	c35af0f8-d4fc-495f-9008-e6605bd47a5c	[]: Access token is expired)}
+20221230	17:49:59	a67dd7a3-96aa-4138-a7d1-545cb8269c5f	[]: Access token is expired)}
+20221230	17:49:59	c92a62ec-4223-4064-8aba-148153378aa3	[]: Access token is expired)}
+20221230	17:49:59	a6e8c202-af67-4874-b753-bc31b32a4d7c	[]: Access token is expired)}
+20221230	17:50:25	1de81365-afef-46e6-a1bc-06e653eb95c2	[]: Access token is expired)}
+20221230	17:50:39	0dadfd2e-0a10-46db-a69c-f8c82b184714	{"detail":"Property is already assigned to agent"}: Property is already assigned to agent)}
+20221230	17:52:39	c9543cfc-49da-41a4-963e-17035f7a7e44	{"detail":"Property is already assigned to agent"}: Property is already assigned to agent)}
