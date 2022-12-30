@@ -39,12 +39,18 @@ function buildBasicDtos(users) {
 function buildBasicInfo(user) {
     return {
         id: user.id,
-        first_name: user.first_name,
-        last_name: user.last_name,
-        email_address: user.email_address,
-        phone_number: user.phone_number,
+        firstName: user.first_name,
+        lastName: user.last_name,
+        emailAddress: user.email_address,
+        phoneNumber: user.phone_number,
         username: user.username,
         description: user.description,
+        isDeleted: user.IsDeleted,
+        createdBy:user.createdBy,
+        isApproved:user?.IsApproved,
+        approvedBy:user.ApprovedBy,
+        createdAt:user.createdAt,
+        updatedAt: user.updatedAt
     }
 }
 

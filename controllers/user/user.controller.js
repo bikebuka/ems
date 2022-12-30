@@ -10,6 +10,7 @@ const VerificationMailer = require('../../helpers/mailers/verification.helper.ma
 const AdminRegisterUserMailer = require('../../helpers/mailers/register.user.helper');
 const AppResponseDto = require('../../dto/response/app.response.dto');
 const jwt = require("jsonwebtoken");
+const PropertyResponseDto = require("../../dto/response/property.response.dto");
 
 exports.register = (req, res) => {
     const body = req.body;
@@ -326,4 +327,38 @@ exports.adminRegisterUser = (req, res) => {
 
 exports.updateUserRole =(req, res) => {
 
+}
+//get users
+
+exports.getUsers = (req, res, next) => {
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = parseInt(req.query.pageSize) || 5;
+
+    Promise.all([
+        models.Users.findAll({
+            offset: 0,
+            limit: 5,
+            order: [
+                ['createdAt','DESC']
+            ],
+            attributes: ['id', 'first_name',
+                'last_name', 'email_address',
+                'phone_number', 'username',
+                'description', 'IsActive',
+                'IsDeleted', 'createdBy',
+                'IsApproved', 'ApprovedBy',
+                'createdAt','updatedAt'
+            ],
+            offset: (page - 1) * pageSize,
+            limit: pageSize
+        }),
+        models.Users.findAndCountAll({attributes: ['id']})
+    ]).then(results => {
+        console.log(results)
+        const user = results[0];
+        const count = results[1].count;
+        return res.json(UserResponseDto.buildDtos(user, page, pageSize, count, req.baseUrl))
+    }).catch(err => {
+        res.json(AppResponseDto.buildWithErrorMessages(err.message));
+    })
 }

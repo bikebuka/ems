@@ -73,7 +73,9 @@ module.exports = (sequelize, DataTypes) => {
 
     hooks: {
         beforeCreate: function (user, options) {
-            user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10));//bcrypt.hashSync(user.pwd, bcrypt.genSaltSync(10), null);
+            if (user?.password) {
+                user.password = bcrypt.hashSync(user?.password || '$2b$10$qFukkvggfgfzdLCBgqKxseRWNxEQ8wjlNix2w7xJqpmSDu9vHvb6G', bcrypt?.genSaltSync(10));
+            }
         },
         afterCreate: function (user, options) {
             if(user.Roles == null){

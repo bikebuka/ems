@@ -3,7 +3,7 @@ const models = require('../models/')
 const AppResponseDto = require('../dto/response/app.response.dto')
 
 async function auth(req, res, next) {
-    const token = req.header('Authorization').replace('Bearer ', '')
+    const token = req.header('Authorization')?.replace('Bearer ', '')
     let data = null;
     try{
         data = await jwt.verify(token, process.env.JWT_KEY)

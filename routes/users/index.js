@@ -10,6 +10,8 @@ router.post('/register-user', AuthenticationMiddleware, setUploadPath('./public/
 router.get('/confirm/:ehash',controller.confirm);
 router.post('/refresh-token', controller.refreshUserToken);
 router.get('/logout', controller.logout)
+//
+router.get('/search',AuthenticationMiddleware,controller.getUsers)
 
 
 module.exports = router;
