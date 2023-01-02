@@ -50,8 +50,9 @@ exports.getAll = (req, res, next) => {
         models.Property.findAndCountAll({attributes: ['id']})
     ]).then(results => {
         const property = results[0];
+        console.log(property)
         const propertyCount = results[1].count;
-        return res.json(PropertyResponseDto.buildPagedList(property, page, pageSize, propertyCount, req.baseUrl))
+        return res.status(200).json(PropertyResponseDto.buildPagedList(property, page, pageSize, propertyCount, req.baseUrl))
     }).catch(err => {
         res.json(AppResponseDto.buildWithErrorMessages(err.message));
     })

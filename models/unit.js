@@ -1,4 +1,5 @@
 'use strict';
+const models=require("../models")
 const {
   Model
 } = require('sequelize');
@@ -40,7 +41,17 @@ module.exports = (sequelize, DataTypes) => {
     bathrooms: DataTypes.INTEGER,
     total_rooms: DataTypes.INTEGER,
     square_foot: DataTypes.INTEGER,
-    created_by: DataTypes.UUID,
+    created_by: {
+      type:DataTypes.UUID,
+      // async get() {
+      //   const id = this.getDataValue('created_by');
+      //   const user = await models.Users?.findByPk(id)
+      //   console.log("users***************************")
+      //   console.log(models)
+      //   console.log("***************************")
+      //   return id ? user : {};
+      // }
+    },
     updated_by: DataTypes.UUID,
     is_deleted: DataTypes.BOOLEAN,
     is_rented: DataTypes.BOOLEAN,

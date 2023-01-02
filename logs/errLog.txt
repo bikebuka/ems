@@ -584,3 +584,53 @@ notNull Violation: ProfilePicture.file_size cannot be null)}
 20221230	17:50:25	1de81365-afef-46e6-a1bc-06e653eb95c2	[]: Access token is expired)}
 20221230	17:50:39	0dadfd2e-0a10-46db-a69c-f8c82b184714	{"detail":"Property is already assigned to agent"}: Property is already assigned to agent)}
 20221230	17:52:39	c9543cfc-49da-41a4-963e-17035f7a7e44	{"detail":"Property is already assigned to agent"}: Property is already assigned to agent)}
+20221230	17:57:04	d99c5a70-3db0-4cad-aa81-b2d12ce53068	{"detail":"Property is already assigned to agent"}: Property is already assigned to agent)}
+20221230	17:57:19	6cfc4e47-1324-4db5-aea0-589ba9ff0b19	{"detail":"Property is already assigned to agent"}: Property is already assigned to agent)}
+20221230	18:06:12	e1c94761-e431-4794-8872-fafca4873c73	{"detail":"Property is already assigned to agent"}: Property is already assigned to agent)}
+20221230	18:06:33	6a12e447-83cb-4706-a846-bd9448fdd6c8	{"detail":"Property is already assigned to agent"}: Property is already assigned to agent)}
+20221230	18:06:58	ebeaf1e1-1497-416e-a165-9ce5172795c5	{"detail":"Property is already assigned to agent"}: Property is already assigned to agent)}
+20221230	18:14:09	71fb83e4-e31b-4576-9e95-09097ba65185	{"detail":"Property is already assigned to agent"}: Property is already assigned to agent)}
+20221230	18:14:17	54a3ec55-662f-4950-86d4-5a0ae107ecb3	{"detail":"Property is already assigned to agent"}: Property is already assigned to agent)}
+20221230	18:17:05	42938de3-562e-4650-b12e-9f14cc10a2e5	{"detail":"Property is already assigned to agent"}: Property is already assigned to agent)}
+20221230	18:17:08	e76a1e01-9386-4979-b14b-a3fd32f1e115	{"detail":"Property is already assigned to agent"}: Property is already assigned to agent)}
+20221230	18:31:58	38239995-8738-4821-90de-c1752c931e4f	{"detail":"Property is already assigned to agent"}: Property is already assigned to agent)}
+20221231	10:45:15	bda307d9-7cc0-4524-af58-a9c8fe00eb79	{"detail":"Property is already assigned to agent"}: Property is already assigned to agent)}
+20221231	10:45:17	98665549-81e2-4f84-875b-161fd3484721	{"detail":"Property is already assigned to agent"}: Property is already assigned to agent)}
+20221231	10:45:17	789b46c4-596d-4b91-b2f3-c186a1159b8d	{"detail":"Property is already assigned to agent"}: Property is already assigned to agent)}
+20221231	10:50:01	3d8584f1-25e4-4e94-bdf6-7355de6d8090	{"detail":"Property is already assigned to agent"}: Property is already assigned to agent)}
+20221231	10:50:06	d3c33cda-539c-4299-962e-c4fb6da1ddf6	{"detail":"Property is already assigned to agent"}: Property is already assigned to agent)}
+20221231	10:50:41	730c6c7c-b395-47a9-a279-ea0d610b767a	{"detail":"Property is already assigned to agent"}: Property is already assigned to agent)}
+20221231	10:50:59	8130568e-d84e-47d0-8264-609298633c22	{"detail":"Property is already assigned to agent"}: Property is already assigned to agent)}
+20221231	10:51:31	5be9623d-6913-466b-af75-c8ed84af9055	{"detail":"Property is already assigned to agent"}: Property is already assigned to agent)}
+20221231	10:54:56	05140677-4275-41b4-9cd9-9b01ed07bd1f	{"detail":"Property is already assigned to agent"}: Property is already assigned to agent)}
+20221231	10:55:07	ac369600-0222-4625-a89d-aa1ebb1618ec	{"detail":"Property is already assigned to agent"}: Property is already assigned to agent)}
+20221231	10:57:20	981a1981-e5c5-4c37-901d-c88d126dfd0d	{"detail":"Property is already assigned to agent"}: Property is already assigned to agent)}
+20221231	10:57:24	49f02aec-d2f3-4cdb-94b4-fc7ce001cf87	{"detail":"Property is already assigned to agent"}: Property is already assigned to agent)}
+20221231	10:57:53	c5873a1e-e919-4022-a4f2-0b8d555bb092	{"detail":"Property is already assigned to agent"}: Property is already assigned to agent)}
+20221231	11:11:30	ba5bdfb5-7d1f-4061-9ef7-a2bf898dcb8b	{"detail":"Property is already assigned to agent"}: Property is already assigned to agent)}
+20221231	13:17:51	09c7f498-e4e7-403b-aeb6-eb44f1f4caee	{"detail":"Property is already assigned to agent"}: Property is already assigned to agent)}
+20221231	14:27:41	89ccd123-c35c-408b-bc28-c555df6cfbfb	{"detail":"Property is already assigned to agent"}: Property is already assigned to agent)}
+20230101	09:45:46	09eb24df-af90-440d-8b88-3af2c51db868	{"detail":"Property is already assigned to agent"}: Property is already assigned to agent)}
+20230101	16:19:44	d94d50ca-236f-435d-aa7f-098ded02ee4a	[]: Cannot read properties of null (reading 'id'))}
+20230101	16:30:04	1afa4047-30e7-4338-9ac1-48cdfa1b38fb	[]: Cannot read properties of null (reading 'id'))}
+20230101	16:40:35	2f30c742-d5ab-40da-b689-ffd81b168e55	{"detail":"Property is already assigned to agent"}: Property is already assigned to agent)}
+20230102	13:09:59	45ee3505-0cfc-4957-ba99-4a2290a79313	{"detail":"Property is already assigned to agent"}: Property is already assigned to agent)}
+20230102	13:51:42	2831fdd7-7517-4ebd-8ee0-05a895d808c4	[{"name":"SequelizeDatabaseError","message":"Data too long for column 'property_description' at row 1"},{"stack":"Error\n    at Query.run (/var/www/html/projects/work/bikebuka/motech/kims/node_modules/sequelize/lib/dialects/mysql/query.js:52:25)\n    at /var/www/html/projects/work/bikebuka/motech/kims/node_modules/sequelize/lib/sequelize.js:314:28\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async MySQLQueryInterface.insert (/var/www/html/projects/work/bikebuka/motech/kims/node_modules/sequelize/lib/dialects/abstract/query-interface.js:308:21)\n    at async Property.save (/var/www/html/projects/work/bikebuka/motech/kims/node_modules/sequelize/lib/model.js:2432:35)\n    at async Property.create (/var/www/html/projects/work/bikebuka/motech/kims/node_modules/sequelize/lib/model.js:1344:12)\n    at async Promise.all (index 7)\n    at async /var/www/html/projects/work/bikebuka/motech/kims/controllers/property/property.controller.js:148:9"}]: SequelizeDatabaseError->Data too long for column 'property_description' at row 1)}
+20230102	13:51:43	fa48da9b-567f-455e-9ed3-0e9eb8758f72	[]: Cannot read properties of null (reading 'id'))}
+20230102	13:57:06	37575a1a-9fcb-4700-8599-d4b7c7ee9e2b	{"first_name":"First Name is required","last_name":"Last Name is required","username":"Username is required","phone_number":"Phone number is required","email_address":"Email is required","password":"Password must not be empty"}: First Name is required,Last Name is required,Username is required,Phone number is required,Email is required,Password must not be empty)}
+20230102	21:14:37	65166cc8-5ddd-4d4b-80ec-a704d3c9c817	[]: Access token is expired)}
+20230102	21:34:46	e56370d1-8140-4d43-965c-d7ecc1ca43b8	[]: Users is not defined)}
+20230102	21:40:51	abf57c7a-2580-418c-b4ac-42867c3ac3db	[]: Cannot read properties of undefined (reading 'findOne'))}
+20230102	21:41:29	8df39cf5-d372-4625-95c1-27784ce9e3e8	[]: Cannot read properties of undefined (reading 'findOne'))}
+20230102	21:46:38	345cf306-fe2b-4da2-9c21-0ec698240b29	[]: models is not defined)}
+20230102	21:50:39	fa7580c5-5dd4-4c68-8d35-dafd7e3fba15	[]: Cannot read properties of undefined (reading 'build'))}
+20230102	21:50:50	8b67e749-12e5-43db-bdf8-c25690b21a67	[]: Cannot read properties of undefined (reading 'build'))}
+20230102	21:50:59	8dada150-f193-4cbc-a5f6-610a5a461ddc	[]: Users is not defined)}
+20230102	21:52:33	5ebfbe73-7887-4155-8d1e-3b59a55a7270	[]: Cannot read properties of undefined (reading 'findOne'))}
+20230102	21:53:37	7d020051-6015-479c-9b7e-aeeb97690880	[]: Cannot read properties of undefined (reading 'findOne'))}
+20230102	21:54:18	80dd57e3-aab2-4cb6-9c82-b5e7b4f12869	[]: Users.findOne is not a function)}
+20230102	21:54:28	8b5eba45-1aa4-4395-b63e-f13487b8d010	[]: Cannot read properties of undefined (reading 'findOne'))}
+20230102	22:14:05	acd86397-0b58-486b-96e4-fea85055efe7	[]: Access token is expired)}
+20230102	22:14:07	2505e7cf-6127-4171-b14b-7f21dfcb23c9	[]: Access token is expired)}
+20230102	22:21:50	a52944a3-f0f8-43a2-ac3e-5d067426d979	[]: Cannot read properties of undefined (reading 'build'))}
+20230102	22:30:43	1fac8f55-1120-4c4e-bcad-2385a3b13e78	[]: Cannot read properties of undefined (reading 'findByPk'))}

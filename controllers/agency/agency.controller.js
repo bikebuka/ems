@@ -278,7 +278,7 @@ exports.assignPropertyToAgent = async (req, res) => {
             agent_id:agent_id,
             property_id: property_id
         }).then((results) => {
-            return res.json(AppResponseDto.buildSuccessWithMessages('Property assigned successfully to the agent'))
+            return res.json(AppResponseDto.buildSuccessWithMessages('Property assigned successfully to an agent'))
         }).catch(err => {
             res.json(AppResponseDto.buildWithErrorMessages(err.message));
         })
