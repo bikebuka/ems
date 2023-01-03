@@ -13,7 +13,22 @@ const AgentRequestDto = require("../../dto/request/agent.request.dto");
 const {forEach} = require("lodash");
 const Op = require('../../models/index').Sequelize.Op;
 const UnitResponseDto = require('../../dto/response/unit.reponse.dto')
-
+//
+exports.getTenants = async (req,res) =>{
+    models.Tenant.findAll().then(results => {
+        console.log(results)
+        return res
+            .status(200)
+            .json({
+                success: true,
+                message: 'you have successfully retrieved tenants',
+                data: results
+            })
+    }).catch(err=> {
+        return res.json(AppResponseDto.buildWithErrorMessages(err))
+    })
+}
+//
 exports.register = async (req, res) => {
     const body= req.body;
     let currentUser = req.user.id;

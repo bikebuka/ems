@@ -676,3 +676,14 @@ notNull Violation: ProfilePicture.file_size cannot be null)}
 20230103	17:21:27	2e767795-8506-4631-8127-49e694b9bf22	[]: Cannot read properties of undefined (reading 'id'))}
 20230103	17:22:23	948de04b-a6a7-4927-aaed-0beae02b8352	[]: Cannot read properties of undefined (reading 'id'))}
 20230103	17:25:38	c7bd35d3-dac4-4cf3-b1d9-1e0503411917	[]: users is not defined)}
+20230103	21:02:31	af6dec8f-232c-4437-b8ff-b52f4ec817cc	[]: Cannot destructure property 'Units' of 'property' as it is null.)}
+20230103	21:04:52	21e17337-7344-471a-b32d-18278d44baba	[]: Access token is expired)}
+20230103	21:04:58	f466fd8f-6d5a-4c69-b682-bac972fe7226	[]: Access token is expired)}
+20230103	21:05:31	2df0fc07-2214-41a4-9a97-3d19e3bed953	[]: Access token is expired)}
+20230103	21:07:53	e032636e-df95-4ce5-ab3e-6d23d507989e	[]: Access token is expired)}
+20230103	21:07:53	7dceae64-858e-4fd3-913b-2721f81d33c3	[]: Access token is expired)}
+20230103	21:07:53	1264ce6d-4471-4d95-a000-abcb59101690	[]: Access token is expired)}
+20230103	21:07:53	c7ecb1d6-2fef-4c52-9de3-9027ee2858ef	[]: Access token is expired)}
+20230103	21:08:00	37ddd685-2655-437e-8d2b-53699bb1768e	[]: Access token is expired)}
+20230103	21:36:25	b18f6048-d9ca-446b-8666-024c59229f34	{"first_name":"First Name is required","last_name":"Last Name is required","username":"Username is required","phone_number":"Phone number is required","email_address":"Email is required","password":"Password must not be empty"}: First Name is required,Last Name is required,Username is required,Phone number is required,Email is required,Password must not be empty)}
+20230103	22:16:04	e3687f3b-3bb9-46d5-8486-7b23c20fff3f	{"phone_number":"Phone number is required"}: Phone number is required)}

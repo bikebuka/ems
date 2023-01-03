@@ -5,7 +5,7 @@ const AuthenticationMiddleware = require("../../middlewares/authentication.middl
 const upload = require('../../utils/upload.property').upload;
 const setUploadPath = require('../../middlewares/upload.middleware').setUploadPath;
 
-
+router.get('', AuthMiddleware, controller.getTenants)
 router.post('/register-tenant', AuthenticationMiddleware, setUploadPath('./public/images/profile'), upload.array('images', 1),controller.register);
 router.get('/get-units', AuthMiddleware, controller.getMyUnits)
 router.post('/pay-rent', AuthMiddleware, controller.payRent)
