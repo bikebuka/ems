@@ -8,6 +8,11 @@ function init(router) {
         next();
     });
 
+    router.param('slug', async function (req, res, next) {
+        req.query = {where:{property_slug : req.params.slug}};
+        next();
+    });
+
     router.param('property_id', async function (req, res, next, slugOrId) {
         const query = {where:{id : req.params.property_id}};
         //query.where = {id: slugOrId};

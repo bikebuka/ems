@@ -12,5 +12,7 @@ router.get('/by_id/:property_id', AuthenticationMiddleware, Controller.getProper
 router.post('/create', AuthenticationMiddleware,setUploadPath('./public/images/properties'), upload.array('images', 15), Controller.createProperty);
 router.post('/create-owner', AuthenticationMiddleware, setUploadPath('./public/images/properties'), upload.array('images', 15), Controller.createPropertyOwner);
 router.post('/create-agency', AuthenticationMiddleware, setUploadPath('./public/images/properties'), upload.array('images', 15), Controller.createPropertyAgency);
+//stats
+router.get('/statistics/:slug', AuthenticationMiddleware, Controller.getPropertyStatistics);
 
 module.exports = router

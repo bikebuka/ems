@@ -448,3 +448,44 @@ exports.createPropertyAgency = async (req, res) => {
     //console.log(agencyId.company_id)
 
 }
+
+exports.getPropertyStatistics = async (req,res,next) => {
+    const query = _.assign(req.query, {
+        include: [
+            {
+                model: models.Users,
+                exclude: ['createdAt', 'updatedAt']
+            },
+            {
+                model: models.Country,
+                exclude: ['createdAt', 'updatedAt']
+            },
+            {
+                model: models.Category
+            },
+            {
+                model: models.PropertyImage
+            },
+            {
+                model: models.Unit,
+                include: [{model: models.UnitType}]
+            }
+        ],
+    });
+    models
+        .Property
+        .findOne(query)
+        .then(property => {
+            const {Units}=property
+            let expectedRent=0;
+            for (let unit of Units) {
+                expectedRent+=unit.rent_amount
+            }
+            console.log("*************Total Rent Amount")
+            console.log(expectedRent)
+            console.log("*************Total Rent Amount")
+            return res.json(PropertyResponseDto.buildDto(property))
+        }).catch(err => {
+        return res.json(AppResponseDto.buildWithErrorMessages(err.message))
+    })
+}

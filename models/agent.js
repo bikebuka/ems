@@ -25,7 +25,6 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey:'agent_id',
         otherKey:'property_id'
       })
-
     }
   }
   Agent.init({
