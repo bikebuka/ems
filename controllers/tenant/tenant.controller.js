@@ -16,7 +16,6 @@ const UnitResponseDto = require('../../dto/response/unit.reponse.dto')
 //
 exports.getTenants = async (req,res) =>{
     models.Tenant.findAll().then(results => {
-        console.log(results)
         return res
             .status(200)
             .json({

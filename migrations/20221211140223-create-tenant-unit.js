@@ -11,21 +11,36 @@ module.exports = {
       },
       tenant_id: {
         type: Sequelize.UUID,
-        // references: {
-        //   model: 'Tenants',
-        //   key: 'id'
-        // },
-        // onDelete: 'cascade',
-        // onUpdate: 'cascade'
+        references: {
+          model: 'Tenant',
+          key: 'id'
+        },
+        onDelete: 'cascade',
+        onUpdate: 'cascade'
       },
       unit_id: {
         type: Sequelize.UUID,
-        // references: {
-        //   model: 'Units',
-        //   key: 'id'
-        // },
-        // onDelete: 'cascade',
-        // onUpdate: 'cascade'
+        references: {
+          model: 'Units',
+          key: 'id'
+        },
+        onDelete: 'cascade',
+        onUpdate: 'cascade'
+      },
+      deposit: {
+        type: Sequelize.UUID
+      },
+      water_bill: {
+        type: Sequelize.UUID
+      },
+      electricity_bill: {
+        type: Sequelize.UUID
+      },
+      other_charges:{
+        type: Sequelize.UUID
+      },
+      is_refundable:{
+        type: Sequelize.BOOLEAN
       },
       current_owner: {
         type: Sequelize.BOOLEAN

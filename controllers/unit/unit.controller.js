@@ -1,11 +1,19 @@
 const models = require('../../models');
 const AppResponseDto = require('../../dto/response/app.response.dto')
 const {removeTicks} = require("sequelize/lib/utils");
+const _ = require("lodash");
+const PropertyResponseDto = require("../../dto/response/property.response.dto");
 const Op = require('../../models/index').Sequelize.Op;
 
 exports.rentUnit = async (req, res) => {
     const tenant_id = req.body.tenant_id;
     const unit_id = req.body.unit_id;
+    //
+    const deposit = req.body.deposit;
+    const water_bill = req.body.water_bill;
+    const electricity_bill = req.body.electricity_bill;
+    const other_charges=req.body.other_charges
+    const is_refundable=req.body.is_refundable
 
     if(!tenant_id || !unit_id){
         res.status(400).send({error:'Please provide a tenant and a unit'});
@@ -26,11 +34,21 @@ exports.rentUnit = async (req, res) => {
     // }
 
     models.TenantUnit.create({
-        tenant_id: tenant_id,
-        unit_id: unit_id
+        tenant_id,
+        unit_id,
+        deposit,
+        water_bill,
+        electricity_bill,
+        other_charges,
+        is_refundable
     }).then(results => {
         models.Unit.update({is_rented: true}, {where: {id: unit_id}}).then(()=>{
-            return res.json(AppResponseDto.buildSuccessWithMessages('Unit rented successfully'))
+            return res
+                .status(200)
+                .json({
+                    success: true,
+                    message: 'This unit has been rented out successfully',
+                })
         }).catch(err => {
             return res.json(AppResponseDto.buildWithErrorMessages(err))
         })
@@ -53,5 +71,35 @@ exports.getTenantUnits = (req, res) => {
         console.log(results)
     }).catch(err=> {
         return res.json(AppResponseDto.buildWithErrorMessages(err))
+    })
+}
+//get single unit
+exports.getUnitByID = (req,res,next) => {
+    const query = _.assign(req.query, {
+        include: [
+            {
+                model: models.Tenant,
+                exclude: ['createdAt', 'updatedAt']
+            },
+            {
+                model: models.Unit,
+                exclude: ['createdAt', 'updatedAt']
+            },
+        ],
+    });
+    models
+        .TenantUnit
+        .findOne(query)
+        .then(item => {
+            console.log(item)
+            return res
+                .status(200)
+                .json({
+                    success: true,
+                    message: 'success',
+                    data: item
+                })
+        }).catch(err => {
+        return res.json(AppResponseDto.buildWithErrorMessages(err.message))
     })
 }

@@ -687,3 +687,10 @@ notNull Violation: ProfilePicture.file_size cannot be null)}
 20230103	21:08:00	37ddd685-2655-437e-8d2b-53699bb1768e	[]: Access token is expired)}
 20230103	21:36:25	b18f6048-d9ca-446b-8666-024c59229f34	{"first_name":"First Name is required","last_name":"Last Name is required","username":"Username is required","phone_number":"Phone number is required","email_address":"Email is required","password":"Password must not be empty"}: First Name is required,Last Name is required,Username is required,Phone number is required,Email is required,Password must not be empty)}
 20230103	22:16:04	e3687f3b-3bb9-46d5-8486-7b23c20fff3f	{"phone_number":"Phone number is required"}: Phone number is required)}
+20230104	23:00:44	9756a304-a892-455e-bfa7-2999bd3cd871	[]: Tenant is not associated to Unit!)}
+20230104	23:01:29	818c0020-d4d9-456b-8927-eb07cad0cce3	[]: Tenant is not associated to TenantUnit!)}
+20230104	23:02:50	3381bd6d-8ef8-4551-9ddf-8728904870f2	[]: Tenant is not associated to TenantUnit!)}
+20230104	23:02:52	85cec65e-aba4-40f1-a34d-e027b690d32f	[]: Tenant is not associated to TenantUnit!)}
+20230104	23:03:26	bdf28636-17e9-424b-abda-61d6bb38e177	[]: Unit is not associated to TenantUnit!)}
+20230104	23:04:28	4b9accc5-2934-45f6-a531-0f81b188a773	[]: Units is not iterable)}
+20230104	23:04:48	8b66b3ae-e940-44e0-843f-a8829d36094d	[]: Units is not iterable)}

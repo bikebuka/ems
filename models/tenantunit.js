@@ -11,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here\
-      // TenantUnit.belongsTo(models.Tenant, {foreignKey: 'tenant_id'})
-      // TenantUnit.belongsTo(models.Unit, {foreignKey:'unit_id' })
+      TenantUnit.belongsTo(models.Tenant, {foreignKey: 'tenant_id'})
+      TenantUnit.belongsTo(models.Unit, {foreignKey:'unit_id' })
     }
   }
   TenantUnit.init({
@@ -24,6 +24,13 @@ module.exports = (sequelize, DataTypes) => {
     },
     tenant_id: DataTypes.UUID,
     unit_id: DataTypes.UUID,
+    //
+    deposit: DataTypes.UUID,
+    water_bill:DataTypes.UUID,
+    electricity_bill:DataTypes.UUID,
+    other_charges:DataTypes.UUID,
+    is_refundable:DataTypes.BOOLEAN,
+    //
     current_owner: {
       type: DataTypes.BOOLEAN,
       defaultValue: true
