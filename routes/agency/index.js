@@ -5,7 +5,9 @@ const AuthenticationMiddleware = require("../../middlewares/authentication.middl
 const upload = require('../../utils/upload.property').upload;
 const setUploadPath = require('../../middlewares/upload.middleware').setUploadPath;
 require('../param_loaders/agency.loader').init(router)
-
+//new version
+router.post('/create', AuthenticationMiddleware,controller.createAgency);
+//old version
 router.post('/register-agency', AuthenticationMiddleware, setUploadPath('./public/images/profile'), upload.array('images', 1),controller.registerAgency);
 router.get('/search', AuthMiddleware, controller.getAgencies);
 router.get('/paginated', AuthMiddleware, controller.getAllAgenciesPaginated);

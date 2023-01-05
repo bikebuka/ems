@@ -41,7 +41,7 @@ exports.register = (req, res) => {
                 errors.phone_number = 'Phone number: ' + body.phone_number + ' is already taken';
 
             if (!_.isEmpty(errors)) {
-                return res.status(403).json(AppResponseDto.buildWithErrorMessages(errors));
+                return res.status(400).json(AppResponseDto.buildWithErrorMessages(errors));
             }
         }
 
@@ -57,8 +57,6 @@ exports.register = (req, res) => {
                 }else{
                     url = `http://localhost:${process.env.API_PORT}/api/${process.env.API_VERSION}/users/confirm/${hash}`
                 }
-                console.dir(user)
-                console.log(user.toJSON())
                 res.json(UserResponseDto.registerDto(user));
                 VerificationMailer.send(email_address, hash, url).then(r => console.log('Success'));
             }

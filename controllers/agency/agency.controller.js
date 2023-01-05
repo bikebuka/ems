@@ -11,7 +11,59 @@ const PropertyResponseDto = require("../../dto/response/property.response.dto");
 const Op = require('../../models/index').Sequelize.Op;
 const AgentResponseDto = require('../../dto/response/agent.response.dto')
 
+//current version to create an agency
+exports.createAgency = (req,res) => {
+    // check if
+    try{
+        models.Agency.create(req.body)
+            .then(result=>{
+                if (result) {
+                    return res
+                        .status(201)
+                        .json({
+                            success: true,
+                            message: "You have successfully added an agency",
+                            data: result
+                        });
+                } else{
+                    return res
+                        .status(500)
+                        .json({
+                            success: false,
+                            message: 'An agency could not be created, something went wrong',
+                        })
+                }
+            })
+            .catch(err=>{
+                if (err.name === 'SequelizeValidationError' || err.name==='SequelizeUniqueConstraintError') {
+                    return res.status(400).json({
+                        success: false,
+                        message: (err.errors.shift().message)
+                    })
+                }
 
+                else {
+                    return res
+                        .status(500)
+                        .json({
+                            success: false,
+                            message: 'An agency could not be created',
+                            error:err
+                        })
+                }
+            })
+    } catch (error) {
+        return res
+            .status(500)
+            .json({
+                success: false,
+                message: 'An agency could not be created',
+                error
+            })
+    }
+
+}
+//
 exports.registerAgency = (req, res, next) => {
     const body = req.body;
     console.log(body)
@@ -48,12 +100,13 @@ exports.registerAgency = (req, res, next) => {
                 errors.phone_number = 'Phone number: ' + body.phone_number + ' is already taken';
 
             if (!_.isEmpty(errors)) {
-                return res.status(403).json(AppResponseDto.buildWithErrorMessages(errors));
+                return res.status(400).json(AppResponseDto.buildWithErrorMessages(errors));
             }
         }
 
         let transac = undefined;
-        sequelize.transaction({autocommit: false}).then(async function (transaction){
+        sequelize.transaction({autocommit: false})
+            .then(async function (transaction){
             transac = transaction;
             const country = req.body.country || "Kenya";
             const role = "ADMIN_AGENCY";
@@ -72,7 +125,8 @@ exports.registerAgency = (req, res, next) => {
             promises.push(models.Users.create(bindingResult.validatedData, {transaction}));
             promises.push(models.Company.create(companyBindingResult.validatedData, {transaction}));
 
-            await Promise.all(promises).then(async results => {
+            await Promise.all(promises)
+                .then(async results => {
                 console.log('Results')
                 console.log(results)
                 promises.length = 0;

@@ -65,7 +65,8 @@ exports.getPaidAmount = async (req, res) => {
 exports.getAgencyVacantUnits = (req, res) => {
     const currentUser = req.user.id;
     const property_id = []
-    models.UserCompany.findOne({where: {user_id: currentUser}}).then(results => {
+    models.UserCompany.findOne({where: {user_id: currentUser}})
+        .then(results => {
         if(results !== null){
             models.Property.findAll({where: {agency_id: results.company_id}, include:[{model:models.Unit}]}).then((results2) => {
                 console.log(results2)
