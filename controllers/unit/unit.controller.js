@@ -75,7 +75,9 @@ exports.getTenantUnits = (req, res) => {
 }
 //get single unit
 exports.getUnitByID = (req,res,next) => {
-    const query = _.assign(req.query, {
+    let statement={where:{unit_id : req.params.id}};
+    //
+    const query = _.assign(statement, {
         include: [
             {
                 model: models.Tenant,
@@ -91,7 +93,14 @@ exports.getUnitByID = (req,res,next) => {
         .TenantUnit
         .findOne(query)
         .then(item => {
-            console.log(item)
+            if (item===null) {
+                return res
+                    .status(404)
+                    .json({
+                        success: false,
+                        message: 'No units found',
+                    })
+            }
             return res
                 .status(200)
                 .json({
