@@ -206,21 +206,14 @@ exports.assignPropertyToAgent = async (req, res) => {
         res.json(AppResponseDto.buildWithErrorMessages(err.message));
     })
 }
-
-
+//agency properties
 exports.getAgencyProperties = (req, res) => {
-    const page = parseInt(req.query.page) || 1;
-    const pageSize = parseInt(req.query.pageSize) || 5;
-
     Promise.all([
         models.Property.findAll({
             where: {agency_id: req.params.agency_id},
-            offset: 0,
-            limit: 5,
             order: [
                 ['createdAt','DESC']
             ],
-            attributes: ['id', 'property_name', 'property_slug', 'property_description', 'property_location', 'property_code','createdAt','updatedAt'],
             include: [
                 {
                     model: models.Users,
@@ -244,16 +237,34 @@ exports.getAgencyProperties = (req, res) => {
                     model: models.Company
                 }
             ],
-            offset: (page - 1) * pageSize,
-            limit: pageSize
+            offset: 0,
+            limit: 5
         }),
-        models.Property.findAndCountAll({attributes: ['id']})
     ]).then(results => {
-        const property = results[0];
-        const propertyCount = results[1].count;
-        return res.json(PropertyResponseDto.buildPagedList(property, page, pageSize, propertyCount, req.baseUrl))
-    }).catch(err => {
-        res.json(AppResponseDto.buildWithErrorMessages(err.message));
+       if (results) {
+           return res
+               .status(200)
+               .json({
+                   success: true,
+                   message:'You have successfully retrieved agency properties',
+                   data: results
+               })
+       } else{
+           return res
+               .status(404)
+               .json({
+                   success: false,
+                   message: 'Sorry! We could not retrieve any property for this agency'
+               })
+       }
+    }).catch(error => {
+        return res
+            .status(500)
+            .json({
+                success: false,
+                message:'Sorry. No property could be retrieved for this agency',
+                error
+            })
     })
 }
 

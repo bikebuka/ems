@@ -13,6 +13,8 @@ router.get('/', AuthenticationMiddleware,controller.getAgencies);
 router.get('/:id', AuthenticationMiddleware,controller.getAgencyById);
 //assign agency
 router.patch('/assign-property', AuthenticationMiddleware,controller.assignPropertyToAgency);
+//agency properties
+router.get('/properties/:agency_id', AuthMiddleware, controller.getAgencyProperties);
 //
 router.get('/:agency_load_ids', AuthMiddleware, controller.getAgencyById)
 router.get('/properties/:agency_id', AuthMiddleware, controller.getAgencyProperties);
