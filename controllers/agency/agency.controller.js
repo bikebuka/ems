@@ -91,18 +91,25 @@ exports.getAgencies = (req,res, next) => {
         return res.json(AppResponseDto.buildWithErrorMessages(err))
     })
 }
-
-exports.getAgencyById = (req, res, next) => {
-    models.Company.findOne({
-        where: {id: req.agency.id},
-        include:[
-            {
-                model: models.Users,
-                include: [{model: models.ProfilePicture}]
-            }
-        ]
+//single agency
+exports.getAgencyById = (req, res) => {
+    models.Agency.findOne({
+        where: {id: req.params.id},
     }).then((agency) => {
-        return res.json(CompanyResponseDto.buildDto(agency))
+        //
+        if (agency===null) {
+            return res.status(404)
+                .json({
+                    success: false,
+                    message:"No agency found with the provided ID",
+                })
+        }
+        return res.status(200)
+            .json({
+                success: true,
+                message:"You have successfully retrieved an agency",
+                data: agency
+            })
     }).catch(err => {
         return res.json(AppResponseDto.buildWithErrorMessages(err.message))
     })

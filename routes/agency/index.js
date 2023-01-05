@@ -9,6 +9,8 @@ require('../param_loaders/agency.loader').init(router)
 router.post('/create', AuthenticationMiddleware,controller.createAgency);
 //agencies
 router.get('/', AuthenticationMiddleware,controller.getAgencies);
+//agency
+router.get('/:id', AuthenticationMiddleware,controller.getAgencyById);
 //old version
 // router.post('/register-agency', AuthenticationMiddleware, setUploadPath('./public/images/profile'), upload.array('images', 1),controller.registerAgency);
 router.get('/search', AuthMiddleware, controller.getAgencies);
