@@ -7,10 +7,12 @@ const setUploadPath = require('../../middlewares/upload.middleware').setUploadPa
 require('../param_loaders/agency.loader').init(router)
 //new version
 router.post('/create', AuthenticationMiddleware,controller.createAgency);
+//agencies
+router.get('/', AuthenticationMiddleware,controller.getAgencies);
 //old version
-router.post('/register-agency', AuthenticationMiddleware, setUploadPath('./public/images/profile'), upload.array('images', 1),controller.registerAgency);
+// router.post('/register-agency', AuthenticationMiddleware, setUploadPath('./public/images/profile'), upload.array('images', 1),controller.registerAgency);
 router.get('/search', AuthMiddleware, controller.getAgencies);
-router.get('/paginated', AuthMiddleware, controller.getAllAgenciesPaginated);
+// router.get('/paginated', AuthMiddleware, controller.getAllAgenciesPaginated);
 router.get('/:agency_load_ids', AuthMiddleware, controller.getAgencyById)
 router.get('/properties/:agency_id', AuthMiddleware, controller.getAgencyProperties);
 router.post('/property/assign-agent', AuthMiddleware, controller.assignPropertyToAgent);
