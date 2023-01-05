@@ -114,6 +114,99 @@ exports.getAgencyById = (req, res) => {
         return res.json(AppResponseDto.buildWithErrorMessages(err.message))
     })
 }
+//assign property to agency
+exports.assignPropertyToAgency = async (req, res) => {
+    const {agency_id,property_id}= req.body
+
+    if (agency_id===null || property_id===null){
+        return res.status(400)
+            .json({
+                success: false,
+                message: 'Provide all the required fields'
+            })
+    }
+
+    const property = await models.Property.findOne({where: {id: property_id}});
+    //
+    const agency = await models.Agency.findOne({where: {id: agency_id}});
+
+    if(property===null || agency===null){
+        return res
+            .status(404)
+            .json({
+                success: false,
+                message:'Property or agency not found'
+            })
+    }
+    //update the agency
+    try{
+        property.agency_id=agency_id;
+        await property.save();
+        //
+        return res
+            .status(200)
+            .json({
+                success: false,
+                message:'Property has been assigned to an agency successfully'
+            })
+    } catch (e) {
+        return res
+            .status(500)
+            .json({
+                success: false,
+                message:'Property could not be assigned to an agency'
+            })
+    }
+
+}
+//assign property to an agent
+exports.assignPropertyToAgent = async (req, res) => {
+    const agent_id = req.body.agent_id;
+    const property_id = req.body.property_id;
+
+    if (!agent_id || !property_id) {
+        res.status(400).send({error: 'You need a email and password'});
+        return;
+    }
+
+    const property = await models.Property.findOne({where: {id: property_id}});
+    debugger
+    const agent = await models.Agent.findOne({where: {id: agent_id}, attributes: ['id', 'first_name', 'last_name', 'email_address', 'phone_number']});
+
+    if(property.length < 1){
+        res.status(400).send({error: 'Property not found'});
+        return;
+    }
+    if(agent.length < 1){
+        res.status(400).send({error: 'Agent not found'});
+        return;
+    }
+
+    await models.AgentProperty.findOne({
+        where: {
+            [Op.and]: [{agent_id}, {property_id}]
+        }
+    }).then((details) => {
+        if(details){
+            const errors = {};
+            errors.detail = 'Property is already assigned to agent'
+            if (!_.isEmpty(errors)) {
+                return res.status(403).json(AppResponseDto.buildWithErrorMessages(errors));
+            }
+        }
+        models.AgentProperty.create({
+            agent_id:agent_id,
+            property_id: property_id
+        }).then((results) => {
+            return res.json(AppResponseDto.buildSuccessWithMessages('Property assigned successfully to an agent'))
+        }).catch(err => {
+            res.json(AppResponseDto.buildWithErrorMessages(err.message));
+        })
+    }).catch(err => {
+        res.json(AppResponseDto.buildWithErrorMessages(err.message));
+    })
+}
+
 
 exports.getAgencyProperties = (req, res) => {
     const page = parseInt(req.query.page) || 1;
@@ -159,53 +252,6 @@ exports.getAgencyProperties = (req, res) => {
         const property = results[0];
         const propertyCount = results[1].count;
         return res.json(PropertyResponseDto.buildPagedList(property, page, pageSize, propertyCount, req.baseUrl))
-    }).catch(err => {
-        res.json(AppResponseDto.buildWithErrorMessages(err.message));
-    })
-}
-
-exports.assignPropertyToAgent = async (req, res) => {
-    const agent_id = req.body.agent_id;
-    const property_id = req.body.property_id;
-
-    if (!agent_id || !property_id) {
-        res.status(400).send({error: 'You need a email and password'});
-        return;
-    }
-
-    const property = await models.Property.findOne({where: {id: property_id}});
-    debugger
-    const agent = await models.Agent.findOne({where: {id: agent_id}, attributes: ['id', 'first_name', 'last_name', 'email_address', 'phone_number']});
-
-    if(property.length < 1){
-        res.status(400).send({error: 'Property not found'});
-        return;
-    }
-    if(agent.length < 1){
-        res.status(400).send({error: 'Agent not found'});
-        return;
-    }
-
-    await models.AgentProperty.findOne({
-        where: {
-            [Op.and]: [{agent_id}, {property_id}]
-        }
-    }).then((details) => {
-        if(details){
-            const errors = {};
-            errors.detail = 'Property is already assigned to agent'
-            if (!_.isEmpty(errors)) {
-                return res.status(403).json(AppResponseDto.buildWithErrorMessages(errors));
-            }
-        }
-        models.AgentProperty.create({
-            agent_id:agent_id,
-            property_id: property_id
-        }).then((results) => {
-            return res.json(AppResponseDto.buildSuccessWithMessages('Property assigned successfully to an agent'))
-        }).catch(err => {
-            res.json(AppResponseDto.buildWithErrorMessages(err.message));
-        })
     }).catch(err => {
         res.json(AppResponseDto.buildWithErrorMessages(err.message));
     })

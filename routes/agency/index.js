@@ -11,10 +11,9 @@ router.post('/create', AuthenticationMiddleware,controller.createAgency);
 router.get('/', AuthenticationMiddleware,controller.getAgencies);
 //agency
 router.get('/:id', AuthenticationMiddleware,controller.getAgencyById);
-//old version
-// router.post('/register-agency', AuthenticationMiddleware, setUploadPath('./public/images/profile'), upload.array('images', 1),controller.registerAgency);
-router.get('/search', AuthMiddleware, controller.getAgencies);
-// router.get('/paginated', AuthMiddleware, controller.getAllAgenciesPaginated);
+//assign agency
+router.patch('/assign-property', AuthenticationMiddleware,controller.assignPropertyToAgency);
+//
 router.get('/:agency_load_ids', AuthMiddleware, controller.getAgencyById)
 router.get('/properties/:agency_id', AuthMiddleware, controller.getAgencyProperties);
 router.post('/property/assign-agent', AuthMiddleware, controller.assignPropertyToAgent);

@@ -697,3 +697,4 @@ notNull Violation: ProfilePicture.file_size cannot be null)}
 20230105	09:15:35	17702efc-e904-4197-b7dd-e3cb2abf6dbd	[]: Access token is expired)}
 20230105	09:16:02	6b0d3d94-e062-495d-828f-425b415e75aa	[]: Access token is expired)}
 20230105	09:16:10	5480ef41-0513-43e7-b65b-3056b5881a0b	[]: Access token is expired)}
+20230105	15:53:48	9f051b96-61db-4610-a9e2-fba429377a3b	[]: slugify: string argument expected)}
