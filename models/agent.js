@@ -11,10 +11,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Agent.belongsTo(models.Users, {
-        foreignKey: 'created_by',
-        otherKey: 'user_id'
-      })
+      Agent.belongsTo(models.Users, {foreignKey: 'user_id'})
+      //
+      Agent.belongsTo(models.Users, {foreignKey: 'created_by'})
+      //
       Agent.belongsTo(models.Agency, {foreignKey:'agency_id'})
     }
   }
@@ -25,13 +25,30 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       primaryKey: true,
     },
-    user_id: DataTypes.UUID,
-    agency_id: DataTypes.INTEGER,
-    property_id:{
+    user_id: {
       type:DataTypes.UUID,
-      unique:true,
+      allowNull: false,
+      references: {
+        model: 'Users',
+        key: 'id'
+      },
     },
-    created_by: DataTypes.UUID,
+    agency_id: {
+      type:DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'Agencies',
+        key: 'id'
+      },
+    },
+    created_by:{
+      type:DataTypes.UUID,
+      allowNull: false,
+      references: {
+        model: 'Users',
+        key: 'id',
+      },
+    },
     status: DataTypes.ENUM("Pending",'Suspended','Approved','Rejected'),
   }, {
     sequelize,

@@ -26,7 +26,7 @@ module.exports = {
       agent_id: {
         type: Sequelize.UUID,
         references: {
-          model: 'agents',
+          model: 'Agents',
           key: 'id'
         }
       },

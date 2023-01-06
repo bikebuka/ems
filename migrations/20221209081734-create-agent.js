@@ -14,21 +14,28 @@ module.exports = {
         references: {
           model: 'Agencies',
           key: 'id'
-        }
+        },
+        allowNull: false,
+        onUpdate:'cascade',
+        onDelete: 'cascade'
       },
       user_id: {
         type: Sequelize.UUID,
         references: {
-          model: 'users',
+          model: 'Users',
           key: 'id'
-        }
+        },
+        allowNull: false,
+        onUpdate:'cascade',
+        onDelete: 'cascade'
       },
       created_by: {
         type: Sequelize.UUID,
+        allowNull: false,
         references: {
           model: 'Users',
           key: 'id'
-        }
+        },
       },
       status: {
         type:Sequelize.ENUM("Pending",'Suspended','Approved','Rejected'),

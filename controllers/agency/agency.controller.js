@@ -126,10 +126,10 @@ exports.assignPropertyToAgency = async (req, res) => {
             })
     }
 
-    const property = await models.Property.findOne({where: {id: property_id}});
+    const property = await models.Property.findOne({where: {id: property_id},attributes:['id','agency_id']});
     //
-    const agency = await models.Agency.findOne({where: {id: agency_id}});
-
+    const agency = await models.Agency.findOne({where: {id: agency_id},attributes:['id']});
+    //
     if(property===null || agency===null){
         return res
             .status(404)
@@ -138,8 +138,11 @@ exports.assignPropertyToAgency = async (req, res) => {
                 message:'Property or agency not found'
             })
     }
-    //update the agency
+    // the agency
     try{
+        console.log("********************888")
+        console.log(property)
+        console.log("********************888")
         property.agency_id=agency_id;
         await property.save();
         //
@@ -149,42 +152,109 @@ exports.assignPropertyToAgency = async (req, res) => {
                 success: false,
                 message:'Property has been assigned to an agency successfully'
             })
-    } catch (e) {
+    } catch (error) {
         return res
             .status(500)
             .json({
                 success: false,
-                message:'Property could not be assigned to an agency'
+                message:'Property could not be assigned to an agency',
+                error
             })
     }
 
 }
+//Register an agent
+exports.registerAgent= async  (req,res) =>{
+    // check if
+    try{
+        models.Agent.create(req.body)
+            .then(result=>{
+                if (result) {
+                    return res
+                        .status(201)
+                        .json({
+                            success: true,
+                            message: "You have successfully added an agent",
+                            data: result
+                        });
+                } else{
+                    return res
+                        .status(500)
+                        .json({
+                            success: false,
+                            message: 'An agent could not be created, something went wrong',
+                        })
+                }
+            })
+            .catch(err=>{
+                if (err.name === 'SequelizeValidationError' || err.name==='SequelizeUniqueConstraintError') {
+                    return res.status(400).json({
+                        success: false,
+                        message: (err.errors.shift().message)
+                    })
+                }
+
+                else {
+                    return res
+                        .status(500)
+                        .json({
+                            success: false,
+                            message: 'An agent could not be created',
+                            error:err
+                        })
+                }
+            })
+    } catch (error) {
+        return res
+            .status(500)
+            .json({
+                success: false,
+                message: 'An agent could not be created',
+                error
+            })
+    }
+}
 //assign property to an agent
 exports.assignPropertyToAgent = async (req, res) => {
-    const agent_id = req.body.agent_id;
-    const property_id = req.body.property_id;
+    const {agency_id,agent_id,property_id}=req.body
+    console.log("******************")
+    console.log(req.body)
+    console.log("******************")
 
-    if (!agent_id || !property_id) {
-        res.status(400).send({error: 'You need a email and password'});
-        return;
+    if (!agent_id || !property_id  || !agency_id===null ) {
+        return res.status(400)
+            .json({
+                success: false,
+                message:'Provide all the required fields'
+            })
+    }
+    //check if property exists
+    try{
+        const property = await models.Property.findOne({where: {id: property_id},attributes:['id']});
+        //check if agent exists
+        const agent = await models.Agent.findOne({where: {id: agent_id},attributes:['id']});
+        //check if agency exists
+        const agency = await models.Agency.findOne({where: {id: agency_id},attributes:['id']});
+        //
+        if (!property || !agent  || !agency ) {
+            return res.status(404)
+                .json({
+                    success: false,
+                    message:'Ensure that the provided details are correct.'
+                })
+        }
+    } catch (error) {
+        return res.status(500)
+            .json({
+                success: false,
+                message:'Ensure that the provided details are correct.',
+                error
+            })
     }
 
-    const property = await models.Property.findOne({where: {id: property_id}});
-    debugger
-    const agent = await models.Agent.findOne({where: {id: agent_id}, attributes: ['id', 'first_name', 'last_name', 'email_address', 'phone_number']});
-
-    if(property.length < 1){
-        res.status(400).send({error: 'Property not found'});
-        return;
-    }
-    if(agent.length < 1){
-        res.status(400).send({error: 'Agent not found'});
-        return;
-    }
-
-    await models.AgentProperty.findOne({
+    await models.AgencyProperty.findOne({
         where: {
-            [Op.and]: [{agent_id}, {property_id}]
+            [Op.and]: [{agent_id}, {property_id}, {agency_id}]
         }
     }).then((details) => {
         if(details){
