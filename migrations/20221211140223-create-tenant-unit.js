@@ -12,7 +12,7 @@ module.exports = {
       tenant_id: {
         type: Sequelize.UUID,
         references: {
-          model: 'Tenant',
+          model: 'Tenants',
           key: 'id'
         },
         onDelete: 'cascade',

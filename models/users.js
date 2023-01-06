@@ -13,7 +13,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-        Users.hasMany(models.Agent,{foreignKey:'created_by'})
+        Users.hasMany(models.Agent,{foreignKey:'user_id'})
+        //
         Users.belongsToMany(models.Roles, {through: models.UserRoles, foreignKey: 'user_id', otherKey: 'role_id'});
         Users.hasOne(models.RefreshToken, {foreignKey:'user_id'})
         Users.belongsToMany(models.Company,{

@@ -11,20 +11,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Agent.belongsTo(models.Users, {foreignKey: 'user_id'})
+      //
       Agent.belongsTo(models.Users, {foreignKey: 'created_by'})
-      Agent.belongsTo(models.Company, {foreignKey:'agency_id'})
-
-      Agent.belongsToMany(models.Users,{
-        through: models.UserAgent,
-        foreignKey:'agent_id',
-        otherKey:'user_id'
-      })
-
-      Agent.belongsToMany(models.Property,{
-        through: models.AgentProperty,
-        foreignKey:'agent_id',
-        otherKey:'property_id'
-      })
+      //
+      Agent.belongsTo(models.Agency, {foreignKey:'agency_id'})
     }
   }
   Agent.init({
@@ -34,17 +25,31 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       primaryKey: true,
     },
-    first_name: DataTypes.STRING,
-    last_name: DataTypes.STRING,
-    email_address: DataTypes.STRING,
-    phone_number: DataTypes.STRING,
-    username: DataTypes.STRING,
-    description: DataTypes.STRING,
-    is_active: DataTypes.BOOLEAN,
-    is_updated: DataTypes.BOOLEAN,
-    is_deleted: DataTypes.BOOLEAN,
-    created_by: DataTypes.UUID,
-    agency_id: DataTypes.UUID
+    user_id: {
+      type:DataTypes.UUID,
+      allowNull: false,
+      references: {
+        model: 'Users',
+        key: 'id'
+      },
+    },
+    agency_id: {
+      type:DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'Agencies',
+        key: 'id'
+      },
+    },
+    created_by:{
+      type:DataTypes.UUID,
+      allowNull: false,
+      references: {
+        model: 'Users',
+        key: 'id',
+      },
+    },
+    status: DataTypes.ENUM("Pending",'Suspended','Approved','Rejected'),
   }, {
     sequelize,
     modelName: 'Agent',

@@ -43,11 +43,11 @@ module.exports = (sequelize, DataTypes) => {
         otherKey:'company_id'
       })
 
-      Property.belongsToMany(models.Agent, {
-        through: models.AgentProperty,
-        foreignKey:'property_id',
-        otherKey: 'agent_id'
-      })
+      // Property.belongsToMany(models.Agent, {
+      //   through: models.AgentProperty,
+      //   foreignKey:'property_id',
+      //   otherKey: 'agent_id'
+      // })
 
       Property.belongsTo(models.Users, {foreignKey: 'created_by'})
       Property.belongsTo(models.Company, {foreignKey: 'agency_id'})

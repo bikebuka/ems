@@ -11,14 +11,18 @@ router.post('/create', AuthenticationMiddleware,controller.createAgency);
 router.get('/', AuthenticationMiddleware,controller.getAgencies);
 //agency
 router.get('/:id', AuthenticationMiddleware,controller.getAgencyById);
-//assign agency
+//assign property to agency
 router.patch('/assign-property', AuthenticationMiddleware,controller.assignPropertyToAgency);
 //agency properties
 router.get('/properties/:agency_id', AuthMiddleware, controller.getAgencyProperties);
+//register an agent
+router.post('/register-agent', AuthMiddleware, controller.registerAgent);
+//assign to agent
+router.post('/agents/assign-property',AuthMiddleware,controller.assignPropertyToAgent)
 //
 router.get('/:agency_load_ids', AuthMiddleware, controller.getAgencyById)
 router.get('/properties/:agency_id', AuthMiddleware, controller.getAgencyProperties);
-router.post('/property/assign-agent', AuthMiddleware, controller.assignPropertyToAgent);
+// router.post('/property/assign-agent', AuthMiddleware, controller.assignPropertyToAgent);
 router.get('/get-agents/:id', AuthMiddleware, controller.getAgents)
 router.get('/agents_no_pagination/:id', AuthMiddleware, controller.getAgentsNoPagination);
 router.get('/get-profile/:id', AuthMiddleware, controller.getCompanyDetails);
