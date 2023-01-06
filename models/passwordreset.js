@@ -11,14 +11,23 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      PasswordReset.belongsTo(models.Users, {foreignKey:'user_id'})
+      PasswordReset.belongsTo(models.User, {foreignKey:'userId'})
     }
   }
   PasswordReset.init({
-    user_id: DataTypes.UUID,
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull:false,
+      references:{
+        model:"Users",
+        key:"id"
+      },
+      onUpdate:"cascade",
+      onDelete:"cascade"
+    },
     provider: DataTypes.STRING,
-    password_reset_token: DataTypes.STRING,
-    password_reset_at: DataTypes.STRING,
+    passwordResetToken: DataTypes.STRING,
+    passwordResetAt: DataTypes.DATE,
     isUsed: DataTypes.BOOLEAN
   }, {
     sequelize,

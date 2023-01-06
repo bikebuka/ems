@@ -17,18 +17,11 @@ const AuthenticationMiddleware = require('./middlewares/authentication.middlewar
 const BenchmarkMiddleware = require('./middlewares/benchmark.middleware')
 
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+//auth router
+const authRouter=require("./routes/auth")
 const permissionRouter = require('./routes/permissions');
 const roleRouter = require('./routes/roles')
-const mpesaRouter = require('./routes/mpesa')
-const countryRouter = require('./routes/country')
-const propertyRouter = require('./routes/property')
 const agencyRouter = require('./routes/agency');
-const landownerRouter = require('./routes/landlord');
-const agentRouter = require('./routes/agent')
-const tenantRouter = require('./routes/tenant')
-const statisticsRouter = require('./routes/statistics');
-const unitRouter = require('./routes/unit')
 
 const app = express();
 
@@ -50,18 +43,10 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {customCs
 let version = process.env.API_VERSION;
 
 app.use(`/api/${version}/`, indexRouter);
-app.use(`/api/${version}/users`, usersRouter);
-app.use(`/api/${version}/permissions`, permissionRouter);
-app.use(`/api/${version}/roles`, roleRouter);
-app.use(`/api/${version}/mpesa`, mpesaRouter);
-app.use(`/api/${version}/countries`,countryRouter)
-app.use(`/api/${version}/properties`, propertyRouter);
+//auth service
+app.use(`/api/${version}/auth`, authRouter);
+//
 app.use(`/api/${version}/agencies`, agencyRouter);
-app.use(`/api/${version}/landowner`, landownerRouter);
-app.use(`/api/${version}/agent`, agentRouter);
-app.use(`/api/${version}/tenants`, tenantRouter);
-app.use(`/api/${version}/statistics`, statisticsRouter);
-app.use(`/api/${version}/unit`, unitRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -79,13 +64,13 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-app.use(function (req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  next();
-});
+// app.use(function (req, res, next) {
+//   res.setHeader('Access-Control-Allow-Origin', '*');
+//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+//   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+//   res.setHeader('Access-Control-Allow-Credentials', true);
+//   next();
+// });
 
 
 

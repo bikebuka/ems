@@ -3,37 +3,38 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class RefreshToken extends Model {
+  class UserRole extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
-      RefreshToken.belongsTo(models.User, {foreignKey:'id'})
+      //
+      UserRole.belongsTo(models.Role, {foreignKey:'roleId'});
+      UserRole.belongsTo(models.User, {foreignKey:'userId'});
     }
   }
-  RefreshToken.init({
-    token: {
-      type: DataTypes.STRING
-    },
-    expiryDate: {
-      type: DataTypes.DATE
+  UserRole.init({
+    roleId: {
+      type: DataTypes.INTEGER,
+      allowNull:false,
+      references: {
+        model: "Roles",
+        key:"id"
+      }
     },
     userId: {
       type: DataTypes.INTEGER,
       allowNull:false,
       references: {
-        model:"Users",
+        model: "Permissions",
         key:"id"
-      },
-      onDelete:"cascade",
-      onUpdate:"cascade"
+      }
     },
   }, {
     sequelize,
-    modelName: 'RefreshToken',
+    modelName: 'UserRole',
   });
-  return RefreshToken;
+  return UserRole;
 };

@@ -140,9 +140,6 @@ exports.assignPropertyToAgency = async (req, res) => {
     }
     // the agency
     try{
-        console.log("********************888")
-        console.log(property)
-        console.log("********************888")
         property.agency_id=agency_id;
         await property.save();
         //
@@ -335,73 +332,5 @@ exports.getAgencyProperties = (req, res) => {
                 message:'Sorry. No property could be retrieved for this agency',
                 error
             })
-    })
-}
-//
-exports.getAgents = (req, res) => {
-    let currentUser = req.params.id;
-
-    const page = parseInt(req.query.page) || 1;
-    const pageSize = parseInt(req.query.pageSize) || 5;
-
-    Promise.all([
-        models.Agent.findAll({
-            where: {agency_id: currentUser},
-            offset: 0,
-            limit: 5,
-            order: [
-                ['createdAt', 'DESC']
-            ],
-            include: [
-                {
-                    model: models.Users,
-                    include:[{model: models.ProfilePicture}]
-                }
-
-            ],
-            offset: (page - 1) * pageSize,
-            limit: pageSize
-        }),
-        models.Agent.findAndCountAll({where:{agency_id: currentUser}, attributes: ['id']})
-    ]).then(results => {
-        const agents = results[0];
-        const agentsCount = results[1].count
-
-        return res.json(AgentResponseDto.buildPagedList(agents, page, pageSize, agentsCount, req.baseUrl))
-    }).catch(err =>{
-        return res.json(AppResponseDto.buildWithErrorMessages(err))
-    })
-}
-
-exports.getAgentsNoPagination  =(req, res) => {
-    let currentUser = req.params.id;
-
-    models.Agent.findAll({
-        where: {agency_id: currentUser},
-    }).then(result => {
-        return res.json(AgentResponseDto.agentBasicDto(result));
-    }).catch(err => {
-        return res.json(AppResponseDto.buildWithErrorMessages(err))
-    })
-}
-
-exports.getCompanyDetails = (req, res) => {
-    const currentUser = req.params.id;
-
-    models.Users.findOne({
-        where: {id: currentUser},
-        include: [
-            {
-                model: models.Company
-            },
-            {
-                model: models.ProfilePicture
-            }
-        ]
-    }).then(results => {
-        console.log(results)
-        return res.json(CompanyResponseDto.companyDetails(results))
-    }).catch(err => {
-        return res.json(AppResponseDto.buildWithErrorMessages(err))
     })
 }
