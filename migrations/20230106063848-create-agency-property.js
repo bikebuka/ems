@@ -2,12 +2,12 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Agents', {
+    await queryInterface.createTable('AgencyProperties', {
       id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
         allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
+        type: Sequelize.INTEGER
       },
       agency_id: {
         type: Sequelize.INTEGER,
@@ -16,23 +16,19 @@ module.exports = {
           key: 'id'
         }
       },
-      user_id: {
+      property_id: {
         type: Sequelize.UUID,
         references: {
-          model: 'users',
+          model: 'Properties',
           key: 'id'
         }
       },
-      created_by: {
+      agent_id: {
         type: Sequelize.UUID,
         references: {
-          model: 'Users',
+          model: 'agents',
           key: 'id'
         }
-      },
-      status: {
-        type:Sequelize.ENUM("Pending",'Suspended','Approved','Rejected'),
-        defaultValue: 'Pending'
       },
       createdAt: {
         allowNull: false,
@@ -45,6 +41,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Agents');
+    await queryInterface.dropTable('AgencyProperties');
   }
 };

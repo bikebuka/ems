@@ -267,7 +267,7 @@ exports.getAgencyProperties = (req, res) => {
             })
     })
 }
-
+//
 exports.getAgents = (req, res) => {
     let currentUser = req.params.id;
 
