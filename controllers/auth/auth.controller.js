@@ -6,6 +6,7 @@ const Op = require('../../models/index').Sequelize.Op;
 
 const jwt = require("jsonwebtoken");
 const Joi = require('joi');
+const bcrypt = require("bcrypt");
 //User schema
 const userSchema = Joi.object().keys({
     firstName: Joi.string().required(),
@@ -22,7 +23,12 @@ const userSchema = Joi.object().keys({
     phoneNumber:Joi.string().required(),
     password:Joi.string().required()
 });
-//
+//login schema
+const authSchema = Joi.object().keys({
+    username: Joi.string().required(),
+    password: Joi.string().required()
+})
+//Create user account
 exports.createAccount = (req,res) => {
     //request body
     const {body}=req;
@@ -41,8 +47,6 @@ exports.createAccount = (req,res) => {
     }
     // save
     try {
-        //hash password
-        body.password=crypto.randomBytes(48).toString('hex');
         //
         models.User.findOne({
             where: {
@@ -56,11 +60,11 @@ exports.createAccount = (req,res) => {
                 if (user.username === body.username)
                     errors.username = 'username: ' + body.username + ' is already taken';
 
-                if (user.email_address === body.email_address)
-                    errors.email_address = 'Email: ' + body.email + ' is already taken';
+                if (user.emailAddress === body.emailAddress)
+                    errors.emailAddress = 'Email: ' + body.email + ' is already taken';
 
-                if (user.phone_number === body.phone_number)
-                    errors.phone_number = 'Phone number: ' + body.phone_number + ' is already taken';
+                if (user.phoneNumber === body.phoneNumber)
+                    errors.phoneNumber = 'Phone number: ' + body.phoneNumber + ' is already taken';
 
                 if (!_.isEmpty(errors)) {
                     return res
@@ -71,29 +75,45 @@ exports.createAccount = (req,res) => {
                             errors
                         })
                 }
-                models
-                    .User
-                    .create(body)
-                    .then(user => {
-                        //check if user has been created
-                        if (!user) {
-                            return res
-                                .status(404)
-                                .json({
-                                    success: false,
-                                    message: "Sorry! user was not added."
-                                })
-                        }
-                        //
-                        return res
-                            .status(201)
-                            .json({
-                                success: true,
-                                message: "An account has been created successfully.",
-                                data: user
-                            })
-                    })
             }
+            //
+            // Generate a salt
+            bcrypt.genSalt(10, (err, salt) => {
+                if (err) throw err;
+
+                // Hash the password using the salt
+                const {password}=body
+                //
+                bcrypt.hash(password, salt, (err, hash) => {
+                    if (err) throw err;
+                    //
+                    body.password=hash
+                    //
+                    models
+                        .User
+                        .create(body)
+                        .then(user => {
+                            //check if user has been created
+                            if (!user) {
+                                return res
+                                    .status(404)
+                                    .json({
+                                        success: false,
+                                        message: "Sorry! user was not added."
+                                    })
+                            }
+                            //
+                            return res
+                                .status(201)
+                                .json({
+                                    success: true,
+                                    message: "An account has been created successfully.",
+                                    data: user
+                                })
+                        })
+                });
+            });
+            //
         })
 
     } catch (error) {
@@ -105,6 +125,68 @@ exports.createAccount = (req,res) => {
                 error
             })
     }
-
-
+}
+//login user
+exports.login = (req,res) => {
+    //request body
+    const {body}=req;
+    //
+    const result=authSchema.validate(body)
+    const { value, error } = result;
+    //
+    const valid = error == null;
+    if (!valid) {
+        return res.status(400)
+            .json({
+                success:false,
+                message: 'Invalid request',
+                data: body
+            })
+    }
+    //authenticate
+    // Validate the username and password
+    const {username,password}=body
+    models.User
+        .findOne({
+            where: {
+                [Op.or]: [{username:body.username},{emailAddress:username}, {phoneNumber:username}]
+            },
+            attributes:['id','firstName','middleName','lastName','userType','status','createdAt','approvedBy',
+                'updatedAt','username','emailAddress','phoneNumber','password']
+        })
+        .then((user) => {
+            if (!user) {
+                return res.status(401)
+                    .json({
+                        success:false,
+                        message: 'Username or password is incorrect'
+                    });
+            }
+            //
+            bcrypt.compare(password, user.password)
+                .then((isMatch) => {
+                    if (!isMatch) {
+                        return res.status(400)
+                            .json({
+                                success:false,
+                                message: 'Username or password is incorrect'
+                            });
+                    }
+                    // If the username and password are valid, generate a JWT token
+                    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+                        expiresIn: '10m'
+                    });
+                    const { password, ...userWithoutPassword } = user;
+                    delete userWithoutPassword.dataValues.password
+                    //set user response
+                    const data=userWithoutPassword.dataValues
+                    // Send the token back to the client
+                    res.json({
+                        success:true,
+                        message: 'You have successfully logged in.',
+                        data,
+                        token
+                    });
+                });
+        });
 }
