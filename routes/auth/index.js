@@ -5,6 +5,5 @@ const controller=require("../../controllers/auth/auth.controller")
 router.post("/create-account",controller.createAccount)
 //login user
 router.post("/login",controller.login)
-
 //
 module.exports=router

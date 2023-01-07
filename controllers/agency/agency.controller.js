@@ -1,20 +1,38 @@
 const models =require('../../models');
 const AppResponseDto =  require('../../dto/response/app.response.dto');
-const CountryResponseDto = require("../../dto/response/country.response.dto");
-const CompanyResponseDto = require("../../dto/response/company.response.dto")
-const UserRequestDto = require("../../dto/request/user.request.dto");
-const CompanyRequestDto = require("../../dto/request/company.request.dto");
 const _ = require("lodash");
-const {sequelize} = require("../../models");
-const AdminRegisterUserMailer = require("../../helpers/mailers/register.user.helper");
-const PropertyResponseDto = require("../../dto/response/property.response.dto");
+const Joi = require("joi");
 const Op = require('../../models/index').Sequelize.Op;
-const AgentResponseDto = require('../../dto/response/agent.response.dto')
 
-//current version to create an agency
+//Agency schema
+const agencySchema = Joi.object().keys({
+    name: Joi.string().required(),
+    telephone:Joi.string().required(),
+    description: Joi.string().required(),
+    emailAddress:Joi.string().email().required(),
+    address:Joi.string().required(),
+    websiteURL:Joi.string(),
+    country:Joi.string(),
+    avatar:Joi.string(),
+});
 exports.createAgency = (req,res) => {
     // check if
     try{
+        //request body
+        const {body}=req;
+        //
+        const result=agencySchema.validate(body)
+        const {error } = result;
+        //
+        const valid = error == null;
+        if (!valid) {
+            return res.status(400)
+                .json({
+                    success:false,
+                    message: 'Invalid agency request',
+                    data: body
+                })
+        }
         models.Agency.create(req.body)
             .then(result=>{
                 if (result) {
