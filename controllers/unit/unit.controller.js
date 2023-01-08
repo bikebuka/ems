@@ -15,6 +15,12 @@ const unitSchema = Joi.object().keys({
     isRented:Joi.boolean().required(),
     counter:Joi.number().required()
 });
+//Rent Out
+const rentOutSchema=Joi.object().keys({
+    unitId:Joi.number().required(),
+    tenantId:Joi.number().required()
+})
+
 //add new property unit
 exports.store= (req,res) => {
     // check if property
@@ -138,6 +144,16 @@ exports.show = (req, res) => {
         where: {id: req.params.id},
         include:[
             {
+                model:models.Tenant,
+                as:'tenant',
+                include:[
+                    {
+                        model:models.User,
+                        as: 'user'
+                    }
+                ]
+            },
+            {
                 model:models.Property,
                 as:'property',
                 include: [
@@ -182,4 +198,42 @@ exports.show = (req, res) => {
                 error
             })
     })
+}
+// Rent Out
+exports.rentOut = async (req, res) => {
+    const {body} = req;
+    //
+    const result = rentOutSchema.validate(body)
+    const {value, error} = result;
+    //
+    const valid = error == null;
+    if (!valid) {
+        return res.status(400)
+            .json({
+                success: false,
+                message: 'Invalid rent out request',
+                data: body
+            })
+    }
+    try {
+        const {unitId,tenantId}=body
+        const unit = await models.Unit.findOne({
+            where: {id: unitId}
+        });
+
+        await unit.update({tenantId,isRented:true});
+        //
+        return res.status(200)
+            .json({
+                success: true,
+                message: 'You have successfully rented out this unit.'
+            })
+    } catch (error) {
+        return res.status(500)
+            .json({
+                success: false,
+                message: 'Ensure that the provided details are correct.',
+                error
+            })
+    }
 }

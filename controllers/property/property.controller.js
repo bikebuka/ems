@@ -230,6 +230,30 @@ exports.index = (req,res) => {
 exports.show = (req, res) => {
     models.Property.findOne({
         where: {id: req.params.id},
+        include:[
+            {
+                model:models.Agency,
+                as :'agency'
+            },
+            {
+                model:models.Agent,
+                as:'agent',
+                include:[
+                    {
+                        model:models.User,
+                        as:'user'
+                    }
+                ]
+            },
+            {
+                model:models.PropertyImage,
+                as :'images'
+            },
+            {
+                model: models.Unit,
+                as:'units'
+            },
+        ]
     }).then((property) => {
         //
         if (property===null) {
@@ -255,8 +279,57 @@ exports.show = (req, res) => {
             })
     })
 }
-function getRandomFileName(path) {
-    let timestamp = new Date().toISOString().replace(/[-:.]/g,"");
-    let random = ("path" + Math.random()).substring(2, 8);
-    return timestamp + random+'.jpg';
+//stats
+exports.propertyStatistics = (req,res) =>{
+    const {propertyId}=req.body
+    try{
+        models
+            .Unit
+            .findAll({where:{propertyId}})
+            .then(units => {
+                //
+                let expectedRent=0;
+                let collectedRent=0;
+                let vacantUnits=0;
+                let rentedUnits=0;
+                for (let unit of units) {
+                    expectedRent+=unit.rentAmount
+                    if (unit.isRented) {
+                        collectedRent+=unit.rentAmount
+                        rentedUnits++
+                    } else{
+                        vacantUnits++
+                    }
+                }
+                let result={
+                    expectedRent,
+                    collectedRent,
+                    rentedUnits,
+                    vacantUnits,
+                }
+                return res
+                    .status(200)
+                    .json({
+                        success: true,
+                        message: 'A property statistics',
+                        data:result
+                    })
+            }).catch(error => {
+            return res
+                .status(500)
+                .json({
+                    success: false,
+                    message: 'A property statistics could not be retrieved',
+                    error
+                })
+        })
+    } catch (error) {
+        return res
+            .status(500)
+            .json({
+                success: false,
+                message: 'A property statistics could not be retrieved',
+                error
+            })
+    }
 }

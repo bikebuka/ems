@@ -7,5 +7,7 @@ router.post('/create', AuthenticationMiddleware,controller.store);
 router.get('/', AuthenticationMiddleware,controller.index);
 //get unit By ID
 router.get('/:id', AuthenticationMiddleware,controller.show);
+//rent out
+router.patch('/:id/rent-out', AuthenticationMiddleware,controller.rentOut);
 
 module.exports=router

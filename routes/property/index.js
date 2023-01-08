@@ -9,5 +9,7 @@ router.get('/', AuthenticationMiddleware,controller.index);
 router.get('/:id', AuthenticationMiddleware,controller.show);
 //upload image
 router.post('/upload-image', AuthenticationMiddleware,controller.uploadPropertyImage);
+//statistics
+router.post('/statistics', AuthenticationMiddleware,controller.propertyStatistics);
 
 module.exports=router

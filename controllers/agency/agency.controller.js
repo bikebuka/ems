@@ -17,8 +17,8 @@ const agencySchema = Joi.object().keys({
 });
 //assign property to agency
 const agencyAssignmentSchema=Joi.object().keys({
-    agencyId:Joi.string().required(),
-    propertyId:Joi.string().required()
+    agencyId:Joi.number().required(),
+    propertyId:Joi.number().required()
 })
 exports.createAgency = (req,res) => {
     // check if
@@ -213,7 +213,7 @@ exports.assignPropertyToAgency = async (req, res) => {
         return res
             .status(200)
             .json({
-                success: false,
+                success: true,
                 message:'Property has been assigned to an agency successfully'
             })
     } catch (error) {
