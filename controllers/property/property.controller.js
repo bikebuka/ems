@@ -1,5 +1,9 @@
 const models =require('../../models');
 const Joi = require("joi");
+const fs=require("fs")
+//
+const base64Image=require("base64-img")
+const sharp = require('sharp');
 
 //property schema
 const propertySchema = Joi.object().keys({
@@ -12,6 +16,11 @@ const propertySchema = Joi.object().keys({
     location:Joi.string(),
     status:Joi.string(),
 });
+//
+const imageUploadSchema = Joi.object().keys({
+    propertyId:Joi.string().required(),
+    base64:Joi.string().required()
+})
 exports.createProperty= (req,res) => {
     // check if property
     try{
@@ -31,6 +40,87 @@ exports.createProperty= (req,res) => {
                 })
         }
         models.Property.create(req.body)
+            .then(result=>{
+                if (result) {
+                    return res
+                        .status(201)
+                        .json({
+                            success: true,
+                            message: "You have successfully added a property",
+                            data: result
+                        });
+                } else{
+                    return res
+                        .status(500)
+                        .json({
+                            success: false,
+                            message: 'A property could not be created, something went wrong',
+                        })
+                }
+            })
+            .catch(err=>{
+                if (err.name === 'SequelizeValidationError' || err.name==='SequelizeUniqueConstraintError') {
+                    return res.status(400).json({
+                        success: false,
+                        message: (err.errors.shift().message)
+                    })
+                }
+
+                else {
+                    return res
+                        .status(500)
+                        .json({
+                            success: false,
+                            message: 'An property could not be created',
+                            error:err
+                        })
+                }
+            })
+    } catch (error) {
+        return res
+            .status(500)
+            .json({
+                success: false,
+                message: 'A property could not be created',
+                error
+            })
+    }
+
+}
+//upload property images
+exports.uploadPropertyImage= (req,res) => {
+    const {base64,propertyId}=req.body
+    // check if property
+    try{
+        //request body
+        const {body}=req;
+        //
+        const result=imageUploadSchema.validate(body)
+        const {error } = result;
+        //
+        const valid = error == null;
+        if (!valid) {
+            return res.status(400)
+                .json({
+                    success:false,
+                    message: 'Invalid property image upload request',
+                    data: body
+                })
+        }
+        //
+
+        const imageURL = 'public/images/properties/'+Date.now()+'.png'
+        // to convert base64 format into random filename
+        const base64Data = base64.replace(/^data:([A-Za-z-+/]+);base64,/, '');
+
+        fs.writeFileSync(imageURL, base64Data,  {encoding: 'base64'});
+
+        //save
+        const data={
+            imageURL,
+            propertyId
+        }
+        models.PropertyImage.create(data)
             .then(result=>{
                 if (result) {
                     return res
@@ -133,4 +223,9 @@ exports.getPropertyById = (req, res) => {
                 error
             })
     })
+}
+function getRandomFileName(path) {
+    let timestamp = new Date().toISOString().replace(/[-:.]/g,"");
+    let random = ("path" + Math.random()).substring(2, 8);
+    return timestamp + random+'.jpg';
 }

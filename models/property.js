@@ -14,6 +14,12 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'propertyId',
         as: 'units'
       });
+      //
+      Property.belongsToMany(models.PropertyImage, {
+        through: 'PropertyPropertyImages',
+        as: 'images',
+        foreignKey: 'propertyId'
+      });
     }
   }
   Property.init({

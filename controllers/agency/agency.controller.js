@@ -15,6 +15,11 @@ const agencySchema = Joi.object().keys({
     country:Joi.string(),
     avatar:Joi.string(),
 });
+//assign property to agency
+const agencyAssignmentSchema=Joi.object().keys({
+    agencyId:Joi.string().required(),
+    propertyId:Joi.string().required()
+})
 exports.createAgency = (req,res) => {
     // check if
     try{
@@ -134,19 +139,27 @@ exports.getAgencyById = (req, res) => {
 }
 //assign property to agency
 exports.assignPropertyToAgency = async (req, res) => {
-    const {agency_id,property_id}= req.body
-
-    if (agency_id===null || property_id===null){
+    //request body
+    const {body}=req;
+    //
+    const result=agencyAssignmentSchema.validate(body)
+    const {error } = result;
+    //
+    const valid = error == null;
+    if (!valid) {
         return res.status(400)
             .json({
-                success: false,
-                message: 'Provide all the required fields'
+                success:false,
+                message: 'Invalid agency assignment request',
+                data: body
             })
     }
-
-    const property = await models.Property.findOne({where: {id: property_id},attributes:['id','agency_id']});
     //
-    const agency = await models.Agency.findOne({where: {id: agency_id},attributes:['id']});
+    const {agencyId,propertyId}=body
+    //
+    const property = await models.Property.findOne({where: {id: propertyId},attributes:['id','agencyId']});
+    //
+    const agency = await models.Agency.findOne({where: {id: agencyId},attributes:['id']});
     //
     if(property===null || agency===null){
         return res
@@ -158,7 +171,7 @@ exports.assignPropertyToAgency = async (req, res) => {
     }
     // the agency
     try{
-        property.agency_id=agency_id;
+        property.agencyId=agencyId;
         await property.save();
         //
         return res
@@ -176,7 +189,6 @@ exports.assignPropertyToAgency = async (req, res) => {
                 error
             })
     }
-
 }
 //Register an agent
 exports.registerAgent= async  (req,res) =>{

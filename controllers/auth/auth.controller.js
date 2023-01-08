@@ -156,7 +156,7 @@ exports.login = (req,res) => {
         })
         .then((user) => {
             if (!user) {
-                return res.status(401)
+                return res.status(400)
                     .json({
                         success:false,
                         message: 'Username or password is incorrect'

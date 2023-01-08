@@ -7,5 +7,7 @@ router.post('/create', AuthenticationMiddleware,controller.createProperty);
 router.get('/', AuthenticationMiddleware,controller.getProperties);
 //get property By ID
 router.get('/:id', AuthenticationMiddleware,controller.getPropertyById);
+//upload image
+router.post('/upload-image', AuthenticationMiddleware,controller.uploadPropertyImage);
 
 module.exports=router
