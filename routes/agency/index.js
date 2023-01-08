@@ -11,10 +11,10 @@ router.get('/:id', AuthenticationMiddleware,controller.getAgencyById);
 //assign property to agency
 router.patch('/assign-property', AuthenticationMiddleware,controller.assignPropertyToAgency);
 //agency properties
-router.get('/properties/:agency_id', AuthMiddleware, controller.getAgencyProperties);
+router.get('/:agencyId/properties', AuthMiddleware, controller.getAgencyProperties);
 //register an agent
-router.post('/register-agent', AuthMiddleware, controller.registerAgent);
-//assign to agent
-router.post('/agents/assign-property',AuthMiddleware,controller.assignPropertyToAgent)
+// router.post('/register-agent', AuthMiddleware, controller.registerAgent);
+// //assign to agent
+// router.post('/agents/assign-property',AuthMiddleware,controller.assignPropertyToAgent)
 //
 module.exports = router

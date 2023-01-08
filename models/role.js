@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
         otherKey: 'permissionId',
       });
       //
-      Role.hasMany(models.Role, {foreignKey:'createdBy'})
+      // Role.hasMany(models.Role, {foreignKey:'createdBy',targetKey:'id'})
     }
   }
   Role.init({

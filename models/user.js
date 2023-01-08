@@ -10,11 +10,12 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-
-      //user has one refresh token
-      User.hasOne(models.RefreshToken, {foreignKey:'userId'})
       //
-      User.belongsToMany(models.Role, {through: models.UserRole, foreignKey: 'userId', otherKey: 'roleId'});
+      User.hasOne(models.Agent,{
+        foreignKey:'userId',
+        targetKey:'id',
+        as: 'user'
+      })
     }
   }
   User.init({

@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         otherKey: 'roleId',
       });
 
-      Permission.hasMany(models.User, {foreignKey:'createdBy'})
+      // Permission.hasMany(models.User, {foreignKey:'createdBy',targetKey:'id'})
 
     }
   }
@@ -38,12 +38,12 @@ module.exports = (sequelize, DataTypes) => {
     createdBy: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: "Users",
-        key:"id"
-      },
-      onDelete: 'cascade',
-      onUpdate: 'cascade'
+      // references: {
+      //   model: "Users",
+      //   key:"id"
+      // },
+      // onDelete: 'cascade',
+      // onUpdate: 'cascade'
     },
   }, {
     sequelize,

@@ -15,8 +15,12 @@ const credentials = require('./middlewares/credentials')
 const indexRouter = require('./routes/index');
 //auth router
 const authRouter=require("./routes/auth")
+//users
+const userRouter=require("./routes/user")
 //agencies
 const agencyRouter = require('./routes/agency');
+//agent
+const agentRouter = require('./routes/agent');
 //properties
 const propertyRouter=require("./routes/property")
 //property units
@@ -46,6 +50,10 @@ let version = process.env.API_VERSION;
 app.use(`/api/${version}/`, indexRouter);
 //auth service
 app.use(`/api/${version}/auth`, authRouter);
+//users
+app.use(`/api/${version}/users`, userRouter);
+//agents
+app.use(`/api/${version}/agents`, agentRouter);
 //agencies
 app.use(`/api/${version}/agencies`, agencyRouter);
 //properties

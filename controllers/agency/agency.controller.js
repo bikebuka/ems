@@ -118,6 +118,32 @@ exports.getAgencies = (req,res, next) => {
 exports.getAgencyById = (req, res) => {
     models.Agency.findOne({
         where: {id: req.params.id},
+        include: [
+            {
+                model: models.Agent,
+                as: 'agents',
+                include: [
+                    {
+                        model:models.User,
+                        as:'user'
+                    }
+                ]
+            },
+            {
+                model: models.Property,
+                as:'properties',
+                include: [
+                    {
+                        model:models.PropertyImage,
+                        as:'images'
+                    },
+                    {
+                        model:models.Unit,
+                        as:'units'
+                    }
+                ]
+            },
+        ]
     }).then((agency) => {
         //
         if (agency===null) {
@@ -190,152 +216,27 @@ exports.assignPropertyToAgency = async (req, res) => {
             })
     }
 }
-//Register an agent
-exports.registerAgent= async  (req,res) =>{
-    // check if
-    try{
-        models.Agent.create(req.body)
-            .then(result=>{
-                if (result) {
-                    return res
-                        .status(201)
-                        .json({
-                            success: true,
-                            message: "You have successfully added an agent",
-                            data: result
-                        });
-                } else{
-                    return res
-                        .status(500)
-                        .json({
-                            success: false,
-                            message: 'An agent could not be created, something went wrong',
-                        })
-                }
-            })
-            .catch(err=>{
-                if (err.name === 'SequelizeValidationError' || err.name==='SequelizeUniqueConstraintError') {
-                    return res.status(400).json({
-                        success: false,
-                        message: (err.errors.shift().message)
-                    })
-                }
-
-                else {
-                    return res
-                        .status(500)
-                        .json({
-                            success: false,
-                            message: 'An agent could not be created',
-                            error:err
-                        })
-                }
-            })
-    } catch (error) {
-        return res
-            .status(500)
-            .json({
-                success: false,
-                message: 'An agent could not be created',
-                error
-            })
-    }
-}
-//assign property to an agent
-exports.assignPropertyToAgent = async (req, res) => {
-    const {agency_id,agent_id,property_id}=req.body
-    console.log("******************")
-    console.log(req.body)
-    console.log("******************")
-
-    if (!agent_id || !property_id  || !agency_id===null ) {
-        return res.status(400)
-            .json({
-                success: false,
-                message:'Provide all the required fields'
-            })
-    }
-    //check if property exists
-    try{
-        const property = await models.Property.findOne({where: {id: property_id},attributes:['id']});
-        //check if agent exists
-        const agent = await models.Agent.findOne({where: {id: agent_id},attributes:['id']});
-        //check if agency exists
-        const agency = await models.Agency.findOne({where: {id: agency_id},attributes:['id']});
-        //
-        if (!property || !agent  || !agency ) {
-            return res.status(404)
-                .json({
-                    success: false,
-                    message:'Ensure that the provided details are correct.'
-                })
-        }
-    } catch (error) {
-        return res.status(500)
-            .json({
-                success: false,
-                message:'Ensure that the provided details are correct.',
-                error
-            })
-    }
-
-    await models.AgencyProperty.findOne({
-        where: {
-            [Op.and]: [{agent_id}, {property_id}, {agency_id}]
-        }
-    }).then((details) => {
-        if(details){
-            const errors = {};
-            errors.detail = 'Property is already assigned to agent'
-            if (!_.isEmpty(errors)) {
-                return res.status(403).json(AppResponseDto.buildWithErrorMessages(errors));
-            }
-        }
-        models.AgentProperty.create({
-            agent_id:agent_id,
-            property_id: property_id
-        }).then((results) => {
-            return res.json(AppResponseDto.buildSuccessWithMessages('Property assigned successfully to an agent'))
-        }).catch(err => {
-            res.json(AppResponseDto.buildWithErrorMessages(err.message));
-        })
-    }).catch(err => {
-        res.json(AppResponseDto.buildWithErrorMessages(err.message));
-    })
-}
 //agency properties
 exports.getAgencyProperties = (req, res) => {
     Promise.all([
-        models.Property.findAll({
-            where: {agency_id: req.params.agency_id},
-            order: [
-                ['createdAt','DESC']
-            ],
+        models.Agency.findOne({
+            where: {id: req.params.agencyId},
             include: [
                 {
-                    model: models.Users,
-                    exclude: ['createdAt', 'updatedAt']
+                    model: models.Property,
+                    as:'properties',
+                    include: [
+                        {
+                            model:models.PropertyImage,
+                            as:'images'
+                        },
+                        {
+                            model:models.Unit,
+                            as:'units'
+                        }
+                    ]
                 },
-                {
-                    model: models.Country,
-                    exclude: ['createdAt', 'updatedAt']
-                },
-                {
-                    model: models.Category
-                },
-                {
-                    model: models.PropertyImage
-                },
-                {
-                    model: models.Unit,
-                    include: [{model: models.UnitType}]
-                },
-                {
-                    model: models.Company
-                }
             ],
-            offset: 0,
-            limit: 5
         }),
     ]).then(results => {
        if (results) {
