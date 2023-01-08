@@ -20,6 +20,12 @@ module.exports = (sequelize, DataTypes) => {
         as: 'images',
         foreignKey: 'propertyId'
       });
+      //
+      Property.belongsTo(models.Agency,{
+        foreignKey:"agencyId",
+        targetKey:'id',
+        as: 'agency'
+      })
     }
   }
   Property.init({

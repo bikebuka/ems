@@ -123,11 +123,17 @@ exports.uploadPropertyImage= (req,res) => {
         models.PropertyImage.create(data)
             .then(result=>{
                 if (result) {
+                    //save to (property property image model)
+                    models.PropertyPropertyImage.create({
+                        propertyId,
+                        propertyImageId: result.id
+                    })
+                    //
                     return res
                         .status(201)
                         .json({
                             success: true,
-                            message: "You have successfully added a property",
+                            message: "You have successfully added a property image",
                             data: result
                         });
                 } else{
@@ -175,6 +181,20 @@ exports.getProperties = (req,res) => {
             order:[
                 'createdAt'
             ],
+            include:[
+                {
+                    model:models.Agency,
+                    as :'agency'
+                },
+                {
+                    model:models.PropertyImage,
+                    as :'images'
+                },
+                {
+                    model: models.Unit,
+                    as:'units'
+                },
+            ]
         }),
     ]).then(results=>{
         const data = results.shift();

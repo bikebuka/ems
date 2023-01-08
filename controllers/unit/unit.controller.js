@@ -6,13 +6,13 @@ const unitSchema = Joi.object().keys({
     propertyId: Joi.string().required(),
     name:Joi.string().required(),
     floor:Joi.string().required(),
-    rentAmount: Joi.string().required(),
-    bedrooms:Joi.string().required(),
-    bathrooms:Joi.string().required(),
-    totalRooms:Joi.string().required(),
+    rentAmount: Joi.number().required(),
+    bedrooms:Joi.number().required(),
+    bathrooms:Joi.number().required(),
+    totalRooms:Joi.number().required(),
     squareFoot:Joi.string().required(),
     isRented:Joi.boolean().required(),
-    counter:Joi.string().required()
+    counter:Joi.number().required()
 });
 //add new property unit
 exports.createUnit= (req,res) => {
@@ -23,6 +23,7 @@ exports.createUnit= (req,res) => {
         //
         const result=unitSchema.validate(body)
         const {error } = result;
+        console.log(error)
         //
         const valid = error == null;
         if (!valid) {
