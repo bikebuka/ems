@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('PasswordResets', {
+    await queryInterface.createTable('Tenants', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -11,25 +11,34 @@ module.exports = {
       },
       userId: {
         type: Sequelize.INTEGER,
-        allowNull:false,
-        references:{
+        unique:true,
+        references: {
           model:"Users",
-          key:"id"
+          key:'id'
         },
-        onUpdate:"cascade",
-        onDelete:"cascade"
+        onUpdate:'cascade',
+        onDelete:'cascade'
       },
-      provider: {
-        type: Sequelize.STRING
+      unitId: {
+        type: Sequelize.INTEGER,
+        unique:true,
+        references: {
+          model:"Units",
+          key:'id'
+        },
+        onUpdate:'cascade',
+        onDelete:'cascade'
       },
-      passwordResetToken: {
-        type: Sequelize.STRING
+      checkIn: {
+        type: Sequelize.DATE,
+        defaultValue: Date.now()
       },
-      passwordResetAt: {
+      checkOut: {
         type: Sequelize.DATE
       },
-      isUsed: {
-        type: Sequelize.BOOLEAN
+      status: {
+        type: Sequelize.ENUM("PAID","PARTIALLY_PAID","PENDING_PAYMENT"),
+        defaultValue:"PENDING_PAYMENT"
       },
       createdAt: {
         allowNull: false,
@@ -42,6 +51,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('PasswordResets');
+    await queryInterface.dropTable('Tenants');
   }
 };

@@ -20,11 +20,17 @@ module.exports = (sequelize, DataTypes) => {
         as: 'images',
         foreignKey: 'propertyId'
       });
-      //
+      //property belongs to an agency
       Property.belongsTo(models.Agency,{
         foreignKey:"agencyId",
         targetKey:'id',
         as: 'agency'
+      })
+      //property belongs to an agent
+      Property.belongsTo(models.Agent,{
+        foreignKey:"agentId",
+        targetKey:'id',
+        as: 'agent'
       })
     }
   }
@@ -42,6 +48,15 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       references: {
         model:'Agencies',
+        key:'id'
+      },
+      onUpdate:'cascade',
+      onDelete:'cascade'
+    },
+    agentId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model:'Agents',
         key:'id'
       },
       onUpdate:'cascade',

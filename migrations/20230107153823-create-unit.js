@@ -18,6 +18,15 @@ module.exports = {
         onUpdate:"cascade",
         onDelete:"cascade",
       },
+      tenantId:{
+        type:Sequelize.INTEGER,
+        references: {
+          model:"Tenants",
+          key:"id"
+        },
+        onUpdate:"cascade",
+        onDelete:"cascade",
+      },
       name: {
         type: Sequelize.STRING
       },

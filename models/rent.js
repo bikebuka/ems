@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Agent extends Model {
+  class Rent extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,49 +11,42 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Agent.belongsTo(models.User,{
-        foreignKey:'userId',
-        targetKey:'id',
-        as: 'user'
+      Rent.belongsTo(models.Unit,{
+        foreignKey:'unitId',
+        as:'unit'
       })
       //
-      Agent.belongsTo(models.Agency,{
-        foreignKey:'agencyId',
-        targetKey:'id',
-        as: 'agency'
-      })
-      // agent has many properties
-      Agent.hasMany(models.Property,{
-        foreignKey:'agentId',
-        targetKey:'id',
-        as:'properties'
+      Rent.belongsTo(models.Tenant,{
+        foreignKey:'tenantId',
+        as:'tenant'
       })
     }
   }
-  Agent.init({
-    userId: {
+  Rent.init({
+    unitId: {
       type: DataTypes.INTEGER,
-      allowNull:false,
       references: {
-        model:'Users',
+        model: 'Units',
         key:'id'
       },
       onUpdate:'cascade',
-      onDelete:'cascade'
+      onDelete:'cascade',
     },
-    agencyId: {
+    tenantId: {
       type: DataTypes.INTEGER,
-      allowNull:false,
       references: {
-        model:'Agencies',
+        model: 'Tenants',
         key:'id'
       },
       onUpdate:'cascade',
-      onDelete:'cascade'
+      onDelete:'cascade',
+    },
+    amountPaid: {
+      type: DataTypes.DOUBLE
     },
   }, {
     sequelize,
-    modelName: 'Agent',
+    modelName: 'Rent',
   });
-  return Agent;
+  return Rent;
 };

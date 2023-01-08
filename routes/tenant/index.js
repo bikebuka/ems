@@ -1,11 +1,9 @@
 const router = require('express').Router();
-const controller = require('../../controllers/agent/agent.controller');
+const controller = require('../../controllers/tenant/tenant.controller');
 const AuthenticationMiddleware = require("../../middlewares/authentication.middleware");
-//add agent
+//add tenant
 router.post('/create', AuthenticationMiddleware,controller.store);
-//agents
+//tenants
 router.get('/', AuthenticationMiddleware,controller.index);
-//
-router.patch('/assign-property', AuthenticationMiddleware,controller.update);
 //
 module.exports = router

@@ -2,28 +2,31 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('RefreshTokens', {
+    await queryInterface.createTable('Rents', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      token: {
-        type: Sequelize.STRING
-      },
-      expiryDate: {
-        type: Sequelize.DATE
-      },
-      userId: {
+      unitId: {
         type: Sequelize.INTEGER,
-        allowNull:false,
         references: {
-          model:"Users",
-          key:"id"
+          model: 'Units',
+          key:'id'
         },
-        onDelete:"cascade",
-        onUpdate:"cascade"
+        onUpdate:'cascade',
+        onDelete:'cascade',
+      },
+      tenantId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Tenants',
+          key:'id'
+        },
+      },
+      amountPaid: {
+        type: Sequelize.DOUBLE
       },
       createdAt: {
         allowNull: false,
@@ -36,6 +39,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('RefreshTokens');
+    await queryInterface.dropTable('Rents');
   }
 };

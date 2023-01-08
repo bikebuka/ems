@@ -3,7 +3,8 @@ const Joi = require("joi");
 
 //property schema
 const unitSchema = Joi.object().keys({
-    propertyId: Joi.string().required(),
+    propertyId: Joi.number(),
+    tenantId: Joi.number(),
     name:Joi.string().required(),
     floor:Joi.string().required(),
     rentAmount: Joi.number().required(),
@@ -15,7 +16,7 @@ const unitSchema = Joi.object().keys({
     counter:Joi.number().required()
 });
 //add new property unit
-exports.createUnit= (req,res) => {
+exports.store= (req,res) => {
     // check if property
     try{
         //request body
@@ -83,12 +84,34 @@ exports.createUnit= (req,res) => {
 
 }
 //get all units
-exports.getUnits = (req,res) => {
+exports.index = (req,res) => {
     Promise.all([
         models.Unit.findAll({
             order:[
                 'createdAt'
             ],
+            include:[
+                {
+                    model:models.Property,
+                    as:'property',
+                    include: [
+                        {
+                            model: models.Agency,
+                            as: 'agency'
+                        },
+                        {
+                            model: models.Agent,
+                            as: 'agent',
+                            include: [
+                                {
+                                    model:models.User,
+                                    as:'user'
+                                }
+                            ]
+                        },
+                    ]
+                }
+            ]
         }),
     ]).then(results=>{
         const data = results.shift();
@@ -110,9 +133,31 @@ exports.getUnits = (req,res) => {
     })
 }
 //single unit
-exports.getUnitById = (req, res) => {
+exports.show = (req, res) => {
     models.Unit.findOne({
         where: {id: req.params.id},
+        include:[
+            {
+                model:models.Property,
+                as:'property',
+                include: [
+                    {
+                        model: models.Agency,
+                        as: 'agency'
+                    },
+                    {
+                        model: models.Agent,
+                        as: 'agent',
+                        include: [
+                            {
+                                model:models.User,
+                                as:'user'
+                            }
+                        ]
+                    },
+                ]
+            }
+        ]
     }).then((unit) => {
         //
         if (unit===null) {
@@ -125,7 +170,7 @@ exports.getUnitById = (req, res) => {
         return res.status(200)
             .json({
                 success: true,
-                message:"You have successfully retrieved an unit",
+                message:"You have successfully retrieved a unit",
                 data: unit
             })
     }).catch(error => {

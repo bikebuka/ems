@@ -25,6 +25,10 @@ const agentRouter = require('./routes/agent');
 const propertyRouter=require("./routes/property")
 //property units
 const unitRouter=require("./routes/unit")
+//tenants
+const tenantRouter=require("./routes/tenant")
+//rents
+const rentRouter=require("./routes/rent")
 
 const app = express();
 
@@ -60,7 +64,10 @@ app.use(`/api/${version}/agencies`, agencyRouter);
 app.use(`/api/${version}/properties`, propertyRouter);
 //units
 app.use(`/api/${version}/units`, unitRouter);
-
+//tenants
+app.use(`/api/${version}/tenants`, tenantRouter);
+//Record rent payments
+app.use(`/api/${version}/rents`, rentRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

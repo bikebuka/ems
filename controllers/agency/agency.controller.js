@@ -134,6 +134,16 @@ exports.getAgencyById = (req, res) => {
                 as:'properties',
                 include: [
                     {
+                        model:models.Agent,
+                        as:'agent',
+                        include:[
+                            {
+                                model:models.User,
+                                as: 'user'
+                            }
+                        ]
+                    },
+                    {
                         model:models.PropertyImage,
                         as:'images'
                     },
@@ -226,6 +236,16 @@ exports.getAgencyProperties = (req, res) => {
                     model: models.Property,
                     as:'properties',
                     include: [
+                        {
+                            model:models.Agent,
+                            as:'agent',
+                            include:[
+                                {
+                                    model:models.User,
+                                    as: 'user'
+                                }
+                            ]
+                        },
                         {
                             model:models.PropertyImage,
                             as:'images'

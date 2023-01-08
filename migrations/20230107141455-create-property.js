@@ -27,6 +27,15 @@ module.exports = {
         onUpdate:'cascade',
         onDelete:'cascade'
       },
+      agentId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model:'Agents',
+          key:'id'
+        },
+        onUpdate:'cascade',
+        onDelete:'cascade'
+      },
       totalUnits: {
         type: Sequelize.INTEGER
       },

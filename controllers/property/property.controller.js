@@ -7,9 +7,10 @@ const sharp = require('sharp');
 
 //property schema
 const propertySchema = Joi.object().keys({
-    userId: Joi.string().required(),
-    agencyId:Joi.string(),
-    totalUnits:Joi.string().required(),
+    userId: Joi.number().required(),
+    agencyId:Joi.number(),
+    agentId:Joi.number(),
+    totalUnits:Joi.number().required(),
     name: Joi.string().required(),
     title:Joi.string().required(),
     description:Joi.string().required(),
@@ -18,10 +19,10 @@ const propertySchema = Joi.object().keys({
 });
 //
 const imageUploadSchema = Joi.object().keys({
-    propertyId:Joi.string().required(),
+    propertyId:Joi.number().required(),
     base64:Joi.string().required()
 })
-exports.createProperty= (req,res) => {
+exports.store= (req,res) => {
     // check if property
     try{
         //request body
@@ -175,7 +176,7 @@ exports.uploadPropertyImage= (req,res) => {
 
 }
 //get all properties
-exports.getProperties = (req,res) => {
+exports.index = (req,res) => {
     Promise.all([
         models.Property.findAll({
             order:[
@@ -185,6 +186,16 @@ exports.getProperties = (req,res) => {
                 {
                     model:models.Agency,
                     as :'agency'
+                },
+                {
+                    model:models.Agent,
+                    as:'agent',
+                    include:[
+                        {
+                            model:models.User,
+                            as:'user'
+                        }
+                    ]
                 },
                 {
                     model:models.PropertyImage,
@@ -216,7 +227,7 @@ exports.getProperties = (req,res) => {
     })
 }
 //single agency
-exports.getPropertyById = (req, res) => {
+exports.show = (req, res) => {
     models.Property.findOne({
         where: {id: req.params.id},
     }).then((property) => {

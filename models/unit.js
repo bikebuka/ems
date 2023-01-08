@@ -10,7 +10,20 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      Unit.belongsTo(models.Property,{
+        foreignKey:'propertyId',
+        as:'property'
+      })
+      //
+      Unit.belongsTo(models.Tenant,{
+        foreignKey:'tenantId',
+        as:'tenant'
+      })
+      //
+      Unit.hasMany(models.Rent,{
+        foreignKey:'unitId',
+        as:'rents'
+      })
     }
   }
   Unit.init({
@@ -18,6 +31,15 @@ module.exports = (sequelize, DataTypes) => {
       type:DataTypes.INTEGER,
       references: {
         model:"Properties",
+        key:"id"
+      },
+      onUpdate:"cascade",
+      onDelete:"cascade",
+    },
+    tenantId:{
+      type:DataTypes.INTEGER,
+      references: {
+        model:"tenants",
         key:"id"
       },
       onUpdate:"cascade",

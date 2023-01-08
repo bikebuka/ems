@@ -1,11 +1,11 @@
 const router = require('express').Router();
-const controller = require('../../controllers/agent/agent.controller');
+const controller = require('../../controllers/rent/rent.controller');
 const AuthenticationMiddleware = require("../../middlewares/authentication.middleware");
-//add agent
+//add rent
 router.post('/create', AuthenticationMiddleware,controller.store);
-//agents
+//rent history
 router.get('/', AuthenticationMiddleware,controller.index);
-//
-router.patch('/assign-property', AuthenticationMiddleware,controller.update);
+//show unit rent hsitory
+router.get('/units/:id/history', AuthenticationMiddleware,controller.show);
 //
 module.exports = router
