@@ -174,7 +174,7 @@ exports.login = (req,res) => {
                     }
                     // If the username and password are valid, generate a JWT token
                     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-                        expiresIn: '10m'
+                        expiresIn: '10d'
                     });
                     const { password, ...userWithoutPassword } = user;
                     delete userWithoutPassword.dataValues.password

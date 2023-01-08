@@ -265,7 +265,7 @@ exports.getAgencyProperties = (req, res) => {
                .json({
                    success: true,
                    message:'You have successfully retrieved agency properties',
-                   data: results
+                   data: results.shift()
                })
        } else{
            return res
