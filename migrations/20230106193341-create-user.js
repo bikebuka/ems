@@ -38,7 +38,7 @@ module.exports = {
         unique:true,
       },
       userType: {
-        type: Sequelize.ENUM("NORMAL","AGENT","AGENCY","LANDLORD","SUPER_ADMIN","ADMIN"),
+        type: Sequelize.ENUM("NORMAL","AGENT","AGENCY","LANDLORD","SUPER_ADMIN","ADMIN","TENANT"),
         allowNull: false,
         defaultValue: "NORMAL"
       },

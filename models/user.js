@@ -56,7 +56,7 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue:"PENDING"
     },
     userType: {
-      type: DataTypes.ENUM("NORMAL","AGENT","AGENCY","LANDLORD","SUPER_ADMIN","ADMIN"),
+      type: DataTypes.ENUM("NORMAL","AGENT","AGENCY","LANDLORD","SUPER_ADMIN","ADMIN","TENANT"),
       allowNull: false,
       defaultValue: "NORMAL"
     },

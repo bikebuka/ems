@@ -21,6 +21,7 @@ const userSchema = Joi.object().keys({
         .email()
         .required(),
     phoneNumber:Joi.string().required(),
+    userType:Joi.string(),
     password:Joi.string().required()
 });
 //login schema

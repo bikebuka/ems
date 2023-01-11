@@ -12,7 +12,7 @@ const unitSchema = Joi.object().keys({
     bathrooms:Joi.number().required(),
     totalRooms:Joi.number().required(),
     squareFoot:Joi.string().required(),
-    isRented:Joi.boolean().required(),
+    isRented:Joi.boolean(),
     counter:Joi.number().required()
 });
 //Rent Out

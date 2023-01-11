@@ -16,7 +16,6 @@ exports.store= async  (req, res) =>{
     //
     const result=tenantSchema.validate(body)
     const { value, error } = result;
-    console.log(value)
     //
     const valid = error == null;
     if (!valid) {
