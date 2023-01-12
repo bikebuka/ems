@@ -10,38 +10,55 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
-      Tenant.belongsToMany(models.Users,{
-        through: models.UserTenant,
-        foreignKey:'tenant_id',
-        otherKey:'user_id'
+      // tenant has a single unit
+      Tenant.hasOne(models.Unit,{
+        foreignKey: "tenantId",
+        as: 'unit'
       })
-
-      // Tenant.belongsToMany(models.Unit, {
-      //   through: models.TenantUnit,
-      //   foreignKey: 'tenant_id',
-      //   otherKey: 'unit_id'
-      // })
+      //
+      Tenant.belongsTo(models.User,{
+        foreignKey: "userId",
+        as: 'user'
+      })
+      //
+      Tenant.hasMany(models.Rent,{
+        foreignKey:'tenantId',
+        as:'rents'
+      })
     }
   }
   Tenant.init({
-    id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-      allowNull: false,
-      primaryKey: true,
+    userId: {
+      type: DataTypes.INTEGER,
+      unique:true,
+      references: {
+        model:"Users",
+        key:'id'
+      },
+      onUpdate:'cascade',
+      onDelete:'cascade'
     },
-    first_name: DataTypes.STRING,
-    last_name: DataTypes.STRING,
-    email_address: DataTypes.STRING,
-    phone_number: DataTypes.STRING,
-    username: DataTypes.STRING,
-    description: DataTypes.STRING,
-    is_active: DataTypes.BOOLEAN,
-    is_updated: DataTypes.BOOLEAN,
-    is_deleted: DataTypes.BOOLEAN,
-    created_by: DataTypes.UUID,
-    agency_id: DataTypes.UUID
+    unitId: {
+      type: DataTypes.INTEGER,
+      unique:true,
+      references: {
+        model:"Units",
+        key:'id'
+      },
+      onUpdate:'cascade',
+      onDelete:'cascade'
+    },
+    checkIn: {
+      type: DataTypes.DATE,
+      defaultValue: Date.now()
+    },
+    checkOut: {
+      type: DataTypes.DATE
+    },
+    status: {
+      type: DataTypes.ENUM("PAID","PARTIALLY_PAID","PENDING_PAYMENT"),
+      defaultValue:"PENDING_PAYMENT"
+    },
   }, {
     sequelize,
     modelName: 'Tenant',

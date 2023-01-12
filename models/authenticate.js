@@ -14,15 +14,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Authenticate.init({
-    id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-      allowNull: false,
-      primaryKey: true,
-    },
-    email_address: DataTypes.STRING,
+    emailAddress: DataTypes.STRING,
     token: DataTypes.STRING,
-    is_used: DataTypes.BOOLEAN
+    isUsed: DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'Authenticate',

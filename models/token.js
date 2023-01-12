@@ -14,14 +14,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Token.init({
-    id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-      allowNull: false,
-      primaryKey: true,
-    },
-    last_updated: DataTypes.DATE,
-    access_token: DataTypes.STRING(100),
+    lastUpdated: DataTypes.DATE,
+    accessToken: DataTypes.STRING(1000),
     timeout: DataTypes.STRING,
     service: DataTypes.STRING
   }, {

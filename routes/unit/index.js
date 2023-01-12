@@ -1,9 +1,13 @@
 const router = require('express').Router();
 const controller = require('../../controllers/unit/unit.controller');
-const AuthMiddleware = require('../../middlewares/authentication.middleware');
+const AuthenticationMiddleware = require("../../middlewares/authentication.middleware");
+//Add new unit
+router.post('/create', AuthenticationMiddleware,controller.store);
+//get all units
+router.get('/', AuthenticationMiddleware,controller.index);
+//get unit By ID
+router.get('/:id', AuthenticationMiddleware,controller.show);
+//rent out
+router.patch('/:id/rent-out', AuthenticationMiddleware,controller.rentOut);
 
-router.post('/rent-out', AuthMiddleware, controller.rentUnit)
-router.get('/tenant-units', AuthMiddleware, controller.getTenantUnits)
-router.get('/:id', AuthMiddleware, controller.getUnitByID)
-
-module.exports = router
+module.exports=router

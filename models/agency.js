@@ -10,20 +10,53 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Agency.hasMany(models.Agent,{foreignKey:'agent_id'})
-      Agency.hasMany(models.Property,{foreignKey:'property_id'})
       // define association here
+      Agency.hasMany(models.Property,{
+        foreignKey:'agencyId',
+        targetKey:'id',
+        as: 'properties'
+      })
+      //
+      Agency.hasMany(models.Agent,{
+        foreignKey:'agencyId',
+        targetKey:'id',
+        as: 'agents'
+      })
     }
   }
   Agency.init({
-    name: DataTypes.STRING,
-    telephone: DataTypes.STRING,
-    email: DataTypes.STRING,
-    description: DataTypes.TEXT,
-    address: DataTypes.TEXT,
-    website: DataTypes.STRING,
-    country: DataTypes.STRING,
-    avatar: DataTypes.STRING
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    telephone: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique:true
+    },
+    emailAddress: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    address: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    websiteURL: {
+      type: DataTypes.STRING
+    },
+    country: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    avatar: {
+      type: DataTypes.STRING
+    },
   }, {
     sequelize,
     modelName: 'Agency',

@@ -11,21 +11,28 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      PropertyImage.belongsTo(models.Property, {foreignKey: 'property_id'})
+      PropertyImage.belongsToMany(models.Property, {
+        through: 'PropertyPropertyImages',
+        as: 'properties',
+        foreignKey: 'propertyImageId'
+      });
     }
   }
   PropertyImage.init({
-    id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-      allowNull: false,
-      primaryKey: true,
+    propertyId: {
+      type: DataTypes.INTEGER,
+      allowNull:false,
+      references: {
+        model:"Properties",
+        key:"id"
+      },
+      onUpdate:'cascade',
+      onDelete:'cascade'
     },
-    property_id: DataTypes.UUID,
-    file_name: DataTypes.STRING,
-    file_path: DataTypes.STRING,
-    original_name: DataTypes.STRING,
-    file_size: DataTypes.INTEGER
+    imageURL: {
+      type: DataTypes.STRING,
+      allowNull:false,
+    },
   }, {
     sequelize,
     modelName: 'PropertyImage',

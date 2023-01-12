@@ -11,45 +11,46 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Agent.belongsTo(models.Users, {foreignKey: 'user_id'})
+      Agent.belongsTo(models.User,{
+        foreignKey:'userId',
+        targetKey:'id',
+        as: 'user'
+      })
       //
-      Agent.belongsTo(models.Users, {foreignKey: 'created_by'})
-      //
-      Agent.belongsTo(models.Agency, {foreignKey:'agency_id'})
+      Agent.belongsTo(models.Agency,{
+        foreignKey:'agencyId',
+        targetKey:'id',
+        as: 'agency'
+      })
+      // agent has many properties
+      Agent.hasMany(models.Property,{
+        foreignKey:'agentId',
+        targetKey:'id',
+        as:'properties'
+      })
     }
   }
   Agent.init({
-    id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-      allowNull: false,
-      primaryKey: true,
-    },
-    user_id: {
-      type:DataTypes.UUID,
-      allowNull: false,
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull:false,
       references: {
-        model: 'Users',
-        key: 'id'
+        model:'Users',
+        key:'id'
       },
+      onUpdate:'cascade',
+      onDelete:'cascade'
     },
-    agency_id: {
-      type:DataTypes.INTEGER,
-      allowNull: false,
+    agencyId: {
+      type: DataTypes.INTEGER,
+      allowNull:false,
       references: {
-        model: 'Agencies',
-        key: 'id'
+        model:'Agencies',
+        key:'id'
       },
+      onUpdate:'cascade',
+      onDelete:'cascade'
     },
-    created_by:{
-      type:DataTypes.UUID,
-      allowNull: false,
-      references: {
-        model: 'Users',
-        key: 'id',
-      },
-    },
-    status: DataTypes.ENUM("Pending",'Suspended','Approved','Rejected'),
   }, {
     sequelize,
     modelName: 'Agent',

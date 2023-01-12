@@ -1,5 +1,4 @@
 'use strict';
-const models=require("../models")
 const {
   Model
 } = require('sequelize');
@@ -11,50 +10,70 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
-      Unit.belongsTo(models.UnitType, {foreignKey:'unit_type_id'})
-      Unit.belongsToMany(models.Property, {
-        through: models.PropertyUnit,
-        foreignKey: 'unit_id',
-        otherKey: 'property_id'
+      Unit.belongsTo(models.Property,{
+        foreignKey:'propertyId',
+        as:'property'
       })
-
-      // Unit.belongsToMany(models.Tenant, {
-      //   through: models.TenantUnit,
-      //   foreignKey: 'unit_id',
-      //   otherKey: 'tenant_id'
-      // })
+      //
+      Unit.belongsTo(models.Tenant,{
+        foreignKey:'tenantId',
+        as:'tenant'
+      })
+      //
+      Unit.hasMany(models.Rent,{
+        foreignKey:'unitId',
+        as:'rents'
+      })
     }
   }
   Unit.init({
-    id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-      allowNull: false,
-      primaryKey: true,
+    propertyId:{
+      type:DataTypes.INTEGER,
+      references: {
+        model:"Properties",
+        key:"id"
+      },
+      onUpdate:"cascade",
+      onDelete:"cascade",
     },
-    unit_name: DataTypes.STRING,
-    unit_floor: DataTypes.STRING,
-    rent_amount: DataTypes.DOUBLE,
-    unit_type_id: DataTypes.UUID,
-    bedrooms: DataTypes.INTEGER,
-    bathrooms: DataTypes.INTEGER,
-    total_rooms: DataTypes.INTEGER,
-    square_foot: DataTypes.INTEGER,
-    created_by: {
-      type:DataTypes.UUID,
-      // async get() {
-      //   const id = this.getDataValue('created_by');
-      //   const user = await models.Users?.findByPk(id)
-      //   console.log("users***************************")
-      //   console.log(models)
-      //   console.log("***************************")
-      //   return id ? user : {};
-      // }
+    tenantId:{
+      type:DataTypes.INTEGER,
+      references: {
+        model:"tenants",
+        key:"id"
+      },
+      onUpdate:"cascade",
+      onDelete:"cascade",
     },
-    updated_by: DataTypes.UUID,
-    is_deleted: DataTypes.BOOLEAN,
-    is_rented: DataTypes.BOOLEAN,
+    name: {
+      type: DataTypes.STRING
+    },
+    floor: {
+      type: DataTypes.STRING
+    },
+    rentAmount: {
+      type: DataTypes.DOUBLE
+    },
+    bedrooms: {
+      type: DataTypes.INTEGER
+    },
+    bathrooms: {
+      type: DataTypes.INTEGER
+    },
+    totalRooms: {
+      type: DataTypes.INTEGER
+    },
+    squareFoot: {
+      type: DataTypes.STRING
+    },
+    counter: {
+      type:DataTypes.INTEGER,
+      defaultValue: 1
+    },
+    isRented: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
   }, {
     sequelize,
     modelName: 'Unit',

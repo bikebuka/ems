@@ -5,30 +5,30 @@ const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+let bodyParser=require("body-parser")
 
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
 const customCss = fs.readFileSync((process.cwd()+"/swagger.css"), 'utf8');
-const corsOptions = require('./utils/cors/corsOptions')
 const { logger } = require('./middlewares/logEvents')
-const AppResponseDto = require('./dto/response/app.response.dto');
 const credentials = require('./middlewares/credentials')
-const AuthenticationMiddleware = require('./middlewares/authentication.middleware')
-const BenchmarkMiddleware = require('./middlewares/benchmark.middleware')
-
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
-const permissionRouter = require('./routes/permissions');
-const roleRouter = require('./routes/roles')
-const mpesaRouter = require('./routes/mpesa')
-const countryRouter = require('./routes/country')
-const propertyRouter = require('./routes/property')
+//auth router
+const authRouter=require("./routes/auth")
+//users
+const userRouter=require("./routes/user")
+//agencies
 const agencyRouter = require('./routes/agency');
-const landownerRouter = require('./routes/landlord');
-const agentRouter = require('./routes/agent')
-const tenantRouter = require('./routes/tenant')
-const statisticsRouter = require('./routes/statistics');
-const unitRouter = require('./routes/unit')
+//agent
+const agentRouter = require('./routes/agent');
+//properties
+const propertyRouter=require("./routes/property")
+//property units
+const unitRouter=require("./routes/unit")
+//tenants
+const tenantRouter=require("./routes/tenant")
+//rents
+const rentRouter=require("./routes/rent")
 
 const app = express();
 
@@ -37,12 +37,14 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 //app.use(BenchmarkMiddleware.benchmark)
+app.use(bodyParser.json({limit: '200mb', extended: true}))
 app.use(logger);
 app.use(credentials);
 app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+//
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {customCss}));
 
@@ -50,19 +52,22 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {customCs
 let version = process.env.API_VERSION;
 
 app.use(`/api/${version}/`, indexRouter);
-app.use(`/api/${version}/users`, usersRouter);
-app.use(`/api/${version}/permissions`, permissionRouter);
-app.use(`/api/${version}/roles`, roleRouter);
-app.use(`/api/${version}/mpesa`, mpesaRouter);
-app.use(`/api/${version}/countries`,countryRouter)
-app.use(`/api/${version}/properties`, propertyRouter);
+//auth service
+app.use(`/api/${version}/auth`, authRouter);
+//users
+app.use(`/api/${version}/users`, userRouter);
+//agents
+app.use(`/api/${version}/agents`, agentRouter);
+//agencies
 app.use(`/api/${version}/agencies`, agencyRouter);
-app.use(`/api/${version}/landowner`, landownerRouter);
-app.use(`/api/${version}/agent`, agentRouter);
+//properties
+app.use(`/api/${version}/properties`, propertyRouter);
+//units
+app.use(`/api/${version}/units`, unitRouter);
+//tenants
 app.use(`/api/${version}/tenants`, tenantRouter);
-app.use(`/api/${version}/statistics`, statisticsRouter);
-app.use(`/api/${version}/unit`, unitRouter)
-
+//Record rent payments
+app.use(`/api/${version}/rents`, rentRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
@@ -78,16 +83,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
-app.use(function (req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  next();
-});
-
-
-
 
 module.exports = app;

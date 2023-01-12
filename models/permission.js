@@ -1,5 +1,4 @@
 'use strict';
-const slugify = require('slugify')
 const {
   Model
 } = require('sequelize');
@@ -12,41 +11,43 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Permission.belongsToMany(models.Roles, {
-        through: models.RolePermission,
-        foreignKey: 'permission_id',
-        otherKey: 'role_id',
+      Permission.belongsToMany(models.Role, {
+        through: models.RoleHasPermission,
+        foreignKey: 'permissionId',
+        otherKey: 'roleId',
       });
 
-      Permission.hasMany(models.Users, {foreignKey:'createdBy'})
+      // Permission.hasMany(models.User, {foreignKey:'createdBy',targetKey:'id'})
+
     }
   }
   Permission.init({
-    id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
+    name: {
+      type: DataTypes.STRING,
+      allowNull:false,
+      unique:true
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull:false,
+      unique:true
+    },
+    status: {
+      type: DataTypes.ENUM("PENDING","ACTIVE","DISABLED")
+    },
+    createdBy: {
+      type: DataTypes.INTEGER,
       allowNull: false,
-      primaryKey: true,
+      // references: {
+      //   model: "Users",
+      //   key:"id"
+      // },
+      // onDelete: 'cascade',
+      // onUpdate: 'cascade'
     },
-    permission_name: DataTypes.STRING,
-    permission_slug: {
-      type: DataTypes.STRING
-    },
-    permission_description: DataTypes.STRING(1000),
-    IsActive: DataTypes.BOOLEAN,
-    IsDeleted: DataTypes.BOOLEAN,
-    createdBy: DataTypes.UUID
   }, {
     sequelize,
     modelName: 'Permission',
-    indexes: [
-      {fields: ['permission_slug']}
-    ],
-    hooks: {
-      beforeValidate(permission, options) {
-        permission.permission_slug = slugify(permission.permission_name, {lower: true})
-      }
-    }
   });
   return Permission;
 };

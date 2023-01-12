@@ -1,5 +1,4 @@
 'use strict';
-const slugify = require('slugify');
 const {
   Model
 } = require('sequelize');
@@ -11,73 +10,80 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
-      Property.hasMany(models.PropertyImage, {foreignKey: 'property_id'})
-      Property.belongsToMany(models.Category,{
-        through: models.PropertyCategory,
-        foreignKey:'property_id',
-        otherKey:'category_id'
+      Property.hasMany(models.Unit, {
+        foreignKey: 'propertyId',
+        as: 'units'
+      });
+      //
+      Property.belongsToMany(models.PropertyImage, {
+        through: 'PropertyPropertyImages',
+        as: 'images',
+        foreignKey: 'propertyId'
+      });
+      //property belongs to an agency
+      Property.belongsTo(models.Agency,{
+        foreignKey:"agencyId",
+        targetKey:'id',
+        as: 'agency'
       })
-
-      Property.belongsToMany(models.Country,{
-        through: models.PropertyCountry,
-        foreignKey:'property_id',
-        otherKey:'country_id'
+      //property belongs to an agent
+      Property.belongsTo(models.Agent,{
+        foreignKey:"agentId",
+        targetKey:'id',
+        as: 'agent'
       })
-
-      Property.belongsToMany(models.Users, {
-        through: models.PropertyOwner,
-        foreignKey: 'property_id',
-        otherKey: 'owner_id'
-      })
-
-      Property.belongsToMany(models.Unit, {
-        through: models.PropertyUnit,
-        foreignKey:'property_id',
-        otherKey: 'unit_id'
-      })
-
-      Property.belongsToMany(models.Company, {
-        through: models.PropertyCompany,
-        foreignKey: 'property_id',
-        otherKey:'company_id'
-      })
-
-      // Property.belongsToMany(models.Agent, {
-      //   through: models.AgentProperty,
-      //   foreignKey:'property_id',
-      //   otherKey: 'agent_id'
-      // })
-
-      Property.belongsTo(models.Users, {foreignKey: 'created_by'})
-      Property.belongsTo(models.Company, {foreignKey: 'agency_id'})
     }
   }
   Property.init({
-    id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-      allowNull: false,
-      primaryKey: true,
+    userId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model:'Users',
+        key:'id'
+      },
+      onUpdate:'cascade',
+      onDelete:'cascade'
     },
-    property_name: DataTypes.STRING,
-    property_slug: DataTypes.STRING,
-    property_description: DataTypes.STRING(1000),
-    property_location: DataTypes.STRING,
-    property_code: DataTypes.STRING,
-    created_by: DataTypes.UUID,
-    agency_id: DataTypes.UUID,
-    is_deleted: DataTypes.BOOLEAN,
-    is_updated: DataTypes.BOOLEAN,
-    updated_by: DataTypes.UUID
+    agencyId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model:'Agencies',
+        key:'id'
+      },
+      onUpdate:'cascade',
+      onDelete:'cascade'
+    },
+    agentId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model:'Agents',
+        key:'id'
+      },
+      onUpdate:'cascade',
+      onDelete:'cascade'
+    },
+    totalUnits: {
+      type: DataTypes.INTEGER
+    },
+    name: {
+      type: DataTypes.STRING
+    },
+    title: {
+      type: DataTypes.STRING
+    },
+    description: {
+      type: DataTypes.TEXT
+    },
+    location: {
+      type: DataTypes.STRING
+    },
+    status: {
+      type: DataTypes.ENUM("ACTIVE","INACTIVE"),
+      defaultValue:"ACTIVE"
+    },
   }, {
     sequelize,
     modelName: 'Property',
-    hooks: {
-      beforeValidate(instance, options) {
-        instance.property_slug = slugify(instance.property_name, {lower: true})
-      }
-    }
   });
   return Property;
 };

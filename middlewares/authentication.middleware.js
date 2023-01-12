@@ -1,38 +1,41 @@
 const jwt = require('jsonwebtoken')
 const models = require('../models/')
-const AppResponseDto = require('../dto/response/app.response.dto')
 
 async function auth(req, res, next) {
     const token = req.header('Authorization')?.replace('Bearer ', '')
     let data = null;
     try{
-        data = await jwt.verify(token, process.env.JWT_KEY)
-    }catch (e){
-        return res.json(AppResponseDto.buildWithErrorMessages('Access token is expired'))
+        data = await jwt.verify(token, process.env.JWT_SECRET)
+    }catch (error){
+        return res.status(401)
+            .json({
+                success:false,
+                message: "Unauthorised access",
+                error
+            })
     }
     try {
-        const user = await models.Users.findOne({
-            where: { id: data.userId },
-            include: [
-                {
-                    model: models.Roles,
-                    attributes: ['name','id'],
-                    include: [{
-                        model: models.Permission,
-                        attributes: ['id', 'permission_name', 'permission_description']
-                    }]
-                }
-            ]
+        const user = await models.User.findOne({
+            where: { id: data.id },
+            attributes: ["id"]
         })
         if (!user) {
-            return  new Error("Can't find the user specified in token");
+            res.status(404)
+                .json({
+                    success:false,
+                    message: 'Unauthorised access',
+                })
         }
         req.user = user;
         req.token = token;
         next();
     } catch (error) {
-        res.status(401).send({ error: 'Not authorized to access this resource' })
+        res.status(401)
+            .json({
+                success:false,
+                message: 'Not authorized to access this resource',
+                error
+            })
     }
-
 }
 module.exports = auth
