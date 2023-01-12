@@ -140,9 +140,6 @@ exports.assignPropertyToAgency = async (req, res) => {
     }
     // the agency
     try{
-        console.log("********************888")
-        console.log(property)
-        console.log("********************888")
         property.agency_id=agency_id;
         await property.save();
         //
