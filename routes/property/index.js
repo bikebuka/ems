@@ -11,5 +11,7 @@ router.get('/:id', AuthenticationMiddleware,controller.show);
 router.post('/upload-image', AuthenticationMiddleware,controller.uploadPropertyImage);
 //statistics
 router.post('/statistics', AuthenticationMiddleware,controller.propertyStatistics);
+//admin stats
+router.get('/admin/statistics', AuthenticationMiddleware,controller.adminPropertyStatistics);
 
 module.exports=router
