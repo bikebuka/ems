@@ -68,7 +68,7 @@ exports.topUpMyAccount = async (req, res) => {
     try {
         const {userId, amount,unitId} = body
         //
-        const [user,created]=await models
+        const [wallet,created]=await models
             .Wallet
             .findOrCreate({
                 where: {
@@ -84,13 +84,15 @@ exports.topUpMyAccount = async (req, res) => {
             return res.status(201)
                 .json({
                     success: false,
-                    message: `Your first top up has been successfully processed. Your new account balance is KES`,
+                    message: `Your first top up has been successfully processed. Your new account balance is KES ${amount}`,
                 })
         } else{
+            //update account balace
+            wallet.update({accountBalance:wallet.accountBalance+amount})
             return res.status(201)
                 .json({
                     success: false,
-                    message: `Your top up has been successfully processed. Your new account balance is KES `,
+                    message: `Your top up has been successfully processed. Your new account balance is KES ${wallet.accountBalance}`,
                 })
         }
     } catch (error) {

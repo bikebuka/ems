@@ -14,7 +14,7 @@ RUN npm ci
 
 COPY . /usr/src/fms/
 
-EXPOSE 4000
+EXPOSE 5000
 
 # Build arguments
 ARG NODE_VERSION=16
