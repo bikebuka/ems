@@ -34,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     unitId: {
       allowNull: false,
-      unique:true,
+      unique:false,
       type: DataTypes.INTEGER,
       references: {
         model: 'Units',

@@ -9,6 +9,13 @@ const TopUpSchema=Joi.object().keys({
     amount:Joi.number().required(),
     unitId:Joi.number().required()
 })
+//send to agent
+const TransferSchema=Joi.object().keys({
+    userId:Joi.number().required(),
+    amount:Joi.number().required(),
+    unitId:Joi.number().required(),
+    agentId:Joi.number().required()
+})
 //user account
 exports.myAccount = (req, res) => {
     models.Wallet.findOne({
@@ -141,45 +148,71 @@ exports.topUpMyAccount = async (req, res) => {
  * @param res
  */
 exports.sendToAgent = async (req, res) => {
+    const {body} = req;
+    //
+    const result = TransferSchema.validate(body)
+    const {value, error} = result;
+    //
+    const valid = error == null;
+    if (!valid) {
+        return res.status(400)
+            .json({
+                success: false,
+                message: 'Invalid transfer request',
+                data: body
+            })
+    }
     //check if the agent is the one managing the unit
     try {
-        const {agentId, userId, amount} = req.body
+        const {agentId, userId, amount,unitId} = req.body
         //update the sender account balance
         let sender = await models.Wallet
             .findOne({
                 where: {userId}
             })
         //update their balance
-        await sender.update({
-            accountBalance: sender.accountBalance-amount,
-        })
-        //agent
-        await models
-            .Wallet
-            .findOrCreate({
-                where: {userId:agentId},
-                defaults: {
-                    userId:agentId,
-                    accountBalance:amount
-                }
-            })
-            .spread((agent,created)=>{
-                if (created) {
-                    return res.status(200)
-                        .json({
-                            success: true,
-                            message: "You have successfully sent money to an agent",
-                        })
-                }
-                //
-                console.log("*************")
-                console.log(agent)
-                console.log("**************")
-                //update account balance
-                agent.update({
-                    accountBalance: agent.accountBalance+amount
+        if (sender.accountBalance>=amount) {
+            //agent
+            const [wallet,created]=await models
+                .Wallet
+                .findOrCreate({
+                    where: {userId:agentId},
+                    defaults: {
+                        userId:agentId,
+                        unitId,
+                        accountBalance:amount
+                    }
                 })
-            })
+            if (created) {
+                sender.update({
+                    accountBalance: sender.accountBalance-amount,
+                })
+                return res.status(200)
+                    .json({
+                        success: true,
+                        message: `You have successfully sent money to an agent, your new account balance is ${sender.accountBalance}`,
+                    })
+            }
+            else{
+                sender.update({
+                    accountBalance: sender.accountBalance-amount,
+                })
+                wallet.update({
+                    accountBalance: wallet.accountBalance+amount
+                })
+                return res.status(200)
+                    .json({
+                        success: true,
+                        message: `You have successfully sent money to an agent, your new account balance is ${sender.accountBalance}`,
+                    })
+            }
+        }else{
+            return res.status(403)
+                .json({
+                    success: false,
+                    message: `You have insufficient funds to transfer ${amount} to your agent! Top up to proceed and try again`,
+                })
+        }
 
     } catch (error) {
         return res.status(500)

@@ -20,7 +20,7 @@ module.exports = {
       },
       unitId: {
         allowNull: false,
-        unique:true,
+        unique:false,
         type: Sequelize.INTEGER,
         references: {
           model: 'Units',
