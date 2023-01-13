@@ -31,7 +31,7 @@ module.exports = {
       },
       checkIn: {
         type: Sequelize.DATE,
-        defaultValue: Date.now()
+        defaultValue: Sequelize.fn('now')
       },
       checkOut: {
         type: Sequelize.DATE
