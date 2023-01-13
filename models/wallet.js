@@ -15,6 +15,11 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey:'userId',
         as: 'accountHolder'
       })
+      // since
+      Wallet.belongsTo(models.Unit,{
+        foreignKey:'unitId',
+        as:'unit'
+      })
     }
   }
   Wallet.init({

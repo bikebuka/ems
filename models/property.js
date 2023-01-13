@@ -32,6 +32,12 @@ module.exports = (sequelize, DataTypes) => {
         targetKey:'id',
         as: 'agent'
       })
+      //property belongs to landlord
+      Property.belongsTo(models.User,{
+        foreignKey:"userId",
+        targetKey:'id',
+        as: 'propertyOwner'
+      })
     }
   }
   Property.init({

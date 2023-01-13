@@ -18,6 +18,36 @@ exports.myAccount = (req, res) => {
                 model:models.User,
                 as:'accountHolder',
             },
+            {
+                model:models.Unit,
+                as:'unit',
+                include: [
+                    {
+                        model: models.Property,
+                        as:'property',
+                        include:[
+                            {
+                                model:models.User,
+                                as:'propertyOwner'
+                            },
+                            {
+                                model:models.Agency,
+                                as:'agency'
+                            },
+                            {
+                                model:models.Agent,
+                                as:'agent',
+                                include:[
+                                    {
+                                        model:models.User,
+                                        as:'user'
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
         ]
     }).then((unit) => {
         //
