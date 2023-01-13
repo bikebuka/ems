@@ -84,13 +84,13 @@ exports.topUpMyAccount = async (req, res) => {
             return res.status(201)
                 .json({
                     success: false,
-                    message: `Your first top up has been successfully processed. Your new account balance is KES ${formatCurrency(result.accountBalance)}`,
+                    message: `Your first top up has been successfully processed. Your new account balance is KES`,
                 })
         } else{
             return res.status(201)
                 .json({
                     success: false,
-                    message: `Your top up has been successfully processed. Your new account balance is KES ${formatCurrency(result.accountBalance)}`,
+                    message: `Your top up has been successfully processed. Your new account balance is KES `,
                 })
         }
     } catch (error) {
