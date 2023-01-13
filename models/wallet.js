@@ -21,21 +21,32 @@ module.exports = (sequelize, DataTypes) => {
     userId: {
       allowNull: false,
       unique:true,
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'Users',
+        key:'id'
+      },
     },
     unitId: {
       allowNull: false,
       unique:true,
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'Units',
+        key:'id'
+      },
     },
     agencyId: {
-      allowNull: false,
-      unique:true,
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'Agencies',
+        key:'id'
+      },
     },
     accountBalance: {
       allowNull: false,
-      type: DataTypes.DOUBLE
+      type: DataTypes.DOUBLE,
+      default:0
     },
     status:{
       type:DataTypes.ENUM("ACTIVE","INACTIVE"),

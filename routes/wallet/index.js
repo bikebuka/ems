@@ -4,5 +4,9 @@ const AuthenticationMiddleware = require("../../middlewares/authentication.middl
 //routes
 //users
 router.get('/account', AuthenticationMiddleware,controller.myAccount);
+//send to agent
+router.get('/send-to-agent', AuthenticationMiddleware,controller.sendToAgent);
+//top up my account
+router.post('/top-up', AuthenticationMiddleware,controller.topUpMyAccount);
 //
 module.exports = router

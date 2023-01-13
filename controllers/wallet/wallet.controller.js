@@ -1,5 +1,14 @@
 //single unit
 const models = require("../../models");
+const Joi = require("joi");
+const {formatCurrency} = require("../../utils/helpers/helpers");
+const helpers = require("../../utils/helpers/helpers");
+//
+const TopUpSchema=Joi.object().keys({
+    userId:Joi.number().required(),
+    amount:Joi.number().required(),
+    unitId:Joi.number().required()
+})
 //user account
 exports.myAccount = (req, res) => {
     models.Wallet.findOne({
@@ -36,63 +45,116 @@ exports.myAccount = (req, res) => {
     })
 }
 /**
+ * Top Up Account
+ * @param req
+ * @param res
+ */
+exports.topUpMyAccount = async (req, res) => {
+    const {body} = req;
+    //
+    const result = TopUpSchema.validate(body)
+    const {value, error} = result;
+    //
+    const valid = error == null;
+    if (!valid) {
+        return res.status(400)
+            .json({
+                success: false,
+                message: 'Invalid top up request',
+                data: body
+            })
+    }
+    //check if the agent is the one managing the unit
+    try {
+        const {userId, amount,unitId} = body
+        //
+        const [user,created]=await models
+            .Wallet
+            .findOrCreate({
+                where: {
+                    userId,
+                },
+                defaults: {
+                    userId,
+                    unitId,
+                    accountBalance:amount
+                }
+            })
+        if (created) {
+            return res.status(201)
+                .json({
+                    success: false,
+                    message: `Your first top up has been successfully processed. Your new account balance is KES ${formatCurrency(result.accountBalance)}`,
+                })
+        } else{
+            return res.status(201)
+                .json({
+                    success: false,
+                    message: `Your top up has been successfully processed. Your new account balance is KES ${formatCurrency(result.accountBalance)}`,
+                })
+        }
+    } catch (error) {
+        return res.status(500)
+            .json({
+                success: false,
+                message: 'You payment request could not be processed at this time.',
+                error
+            })
+    }
+}
+
+/**
  * Send Money To Agent
  * @param req
  * @param res
  */
-exports.sendToAgent = (req, res) => {
+exports.sendToAgent = async (req, res) => {
     //check if the agent is the one managing the unit
-    try{
-        const {agentId,userId}=req.body
-        //
-        const agent=models.Agent.findOne({
-            where: {
-                id:agentId
-            },
-            include: [
-                {
-                    model: models.Unit,
-                    as:'Unit'
-                }
-            ]
-        })
-        //check if the agent owns this unit
-        const tenant=models.Tenant
-
-
-    }catch (e){
-
-    }
-    models.Wallet.findOne({
-        where: {id: req.params.id},
-        include:[
-            {
-                model:models.User,
-                as:'accountHolder',
-            },
-        ]
-    }).then((unit) => {
-        //
-        if (unit===null) {
-            return res.status(404)
-                .json({
-                    success: false,
-                    message:"My Account Information",
-                })
-        }
-        return res.status(200)
-            .json({
-                success: true,
-                message:"You have successfully retrieved an account details",
-                data: unit
+    try {
+        const {agentId, userId, amount} = req.body
+        //update the sender account balance
+        let sender = await models.Wallet
+            .findOne({
+                where: {userId}
             })
-    }).catch(error => {
-        return res
-            .status(500)
+        //update their balance
+        await sender.update({
+            accountBalance: sender.accountBalance-amount,
+        })
+        //agent
+        await models
+            .Wallet
+            .findOrCreate({
+                where: {userId:agentId},
+                defaults: {
+                    userId:agentId,
+                    accountBalance:amount
+                }
+            })
+            .spread((agent,created)=>{
+                if (created) {
+                    return res.status(200)
+                        .json({
+                            success: true,
+                            message: "You have successfully sent money to an agent",
+                        })
+                }
+                //
+                console.log("*************")
+                console.log(agent)
+                console.log("**************")
+                //update account balance
+                agent.update({
+                    accountBalance: agent.accountBalance+amount
+                })
+            })
+
+    } catch (error) {
+        return res.status(500)
             .json({
                 success: false,
-                message: 'An account could not be retrieved',
+                message: 'You payment request could not be processed at this time.',
                 error
             })
-    })
+    }
 }

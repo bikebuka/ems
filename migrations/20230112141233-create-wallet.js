@@ -12,21 +12,32 @@ module.exports = {
       userId: {
         allowNull: false,
         unique:true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Users',
+          key:'id'
+        },
       },
       unitId: {
         allowNull: false,
         unique:true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Units',
+          key:'id'
+        },
       },
       agencyId: {
-        allowNull: false,
-        unique:true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Agencies',
+          key:'id'
+        },
       },
-      account_balance: {
+      accountBalance: {
         allowNull: false,
-        type: Sequelize.DOUBLE
+        type: Sequelize.DOUBLE,
+        default:0
       },
       status:{
         type:Sequelize.ENUM("ACTIVE","INACTIVE"),
