@@ -333,3 +333,62 @@ exports.propertyStatistics = (req,res) =>{
             })
     }
 }
+/**
+ * Admin stats
+ * @param req
+ * @param res
+ * @returns {*}
+ */
+exports.adminPropertyStatistics = (req,res) =>{
+    const {propertyId}=req.body
+    try{
+        models
+            .Unit
+            .findAll()
+            .then(units => {
+                //
+                let expectedRent=0;
+                let collectedRent=0;
+                let vacantUnits=0;
+                let rentedUnits=0;
+                for (let unit of units) {
+                    expectedRent+=unit.rentAmount
+                    if (unit.isRented) {
+                        collectedRent+=unit.rentAmount
+                        rentedUnits++
+                    } else{
+                        vacantUnits++
+                    }
+                }
+                let result={
+                    expectedRent,
+                    collectedRent,
+                    rentedUnits,
+                    vacantUnits,
+                }
+                return res
+                    .status(200)
+                    .json({
+                        success: true,
+                        message: 'A property statistics',
+                        data:result
+                    })
+            }).catch(error => {
+            return res
+                .status(500)
+                .json({
+                    success: false,
+                    message: 'A property statistics could not be retrieved',
+                    error
+                })
+        })
+    } catch (error) {
+        return res
+            .status(500)
+            .json({
+                success: false,
+                message: 'A property statistics could not be retrieved',
+                error
+            })
+    }
+}
