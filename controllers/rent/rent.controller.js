@@ -3,13 +3,13 @@ const _ = require("lodash");
 const Joi = require("joi");
 const {Op} = require("sequelize");
 //
-//Agent schema
+//Rent schema
 const rentSchema = Joi.object().keys({
     unitId: Joi.number().required(),
     tenantId:Joi.number().required(),
     amountPaid:Joi.number().required(),
 });
-//create an agent
+//create rent
 exports.store= async  (req, res) =>{
     //request body
     const {body}=req;

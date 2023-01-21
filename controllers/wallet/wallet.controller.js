@@ -1,8 +1,6 @@
 //single unit
 const models = require("../../models");
 const Joi = require("joi");
-const {formatCurrency} = require("../../utils/helpers/helpers");
-const helpers = require("../../utils/helpers/helpers");
 //
 const TopUpSchema=Joi.object().keys({
     userId:Joi.number().required(),
@@ -218,7 +216,7 @@ exports.sendToAgent = async (req, res) => {
         return res.status(500)
             .json({
                 success: false,
-                message: 'You payment request could not be processed at this time.',
+                message: 'Your payment request could not be processed at this time.',
                 error
             })
     }

@@ -165,25 +165,57 @@ exports.login = (req,res) => {
             }
             //
             bcrypt.compare(password, user.password)
-                .then((isMatch) => {
+                .then(async (isMatch) => {
                     if (!isMatch) {
                         return res.status(400)
                             .json({
-                                success:false,
+                                success: false,
                                 message: 'Username or password is incorrect'
                             });
                     }
+                    //
+                    const unit = await models.Unit.findOne(
+                        {
+                            where: {tenantId: user.id},
+                            include:[
+                                {
+                                    model:models.Property,
+                                    as:'property',
+                                    include:[
+                                        {
+                                            model:models.Agent,
+                                            as: 'agent',
+                                            include: [
+                                                {
+                                                    model:models.User,
+                                                    as:'user'
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            model:models.Agency,
+                                            as: 'agency'
+                                        }
+                                    ]
+                                },
+                            ]
+                        }
+                    );
+                    console.log(unit)
                     // If the username and password are valid, generate a JWT token
-                    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+                    const token = jwt.sign({id: user.id}, process.env.JWT_SECRET, {
                         expiresIn: '10d'
                     });
-                    const { password, ...userWithoutPassword } = user;
+                    const {password, ...userWithoutPassword} = user;
                     delete userWithoutPassword.dataValues.password
                     //set user response
-                    const data=userWithoutPassword.dataValues
+                    const data = {
+                        user: userWithoutPassword.dataValues,
+                        unit
+                    }
                     // Send the token back to the client
                     res.json({
-                        success:true,
+                        success: true,
                         message: 'You have successfully logged in.',
                         data,
                         token
