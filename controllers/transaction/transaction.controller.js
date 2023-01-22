@@ -47,17 +47,19 @@ exports.initiateRentTransaction = async (req,res) =>{
             if (created) {
                 return res.status(201)
                     .json({
-                        success: false,
+                        success: true,
                         message: `Your rent payment has been initiated. Please proceed to confirm payment`,
+                        data:created
                     })
             } else{
                 //update transaction
-                transaction.update({amount,accountReference,transactionId})
+                transaction.update({amount,accountReference,accountNumber,payerId,unitId})
                 //
                 return res.status(201)
                     .json({
-                        success: false,
+                        success: true,
                         message: `Your rent payment transaction has been initiated`,
+                        data:transaction
                     })
             }
         } catch (error) {
