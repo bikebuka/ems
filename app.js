@@ -75,7 +75,7 @@ app.use(`/api/${version}/rents`, rentRouter);
 //wallet
 app.use(`/api/${version}/wallet`, walletRouter);
 //transaction
-app.use(`/api/${version}/transaction`, transactionRouter);
+app.use(`/api/${version}/transactions`, transactionRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

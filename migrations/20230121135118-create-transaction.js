@@ -29,13 +29,17 @@ module.exports = {
           key:'id'
         },
       },
-      payerId: {
+    payerID: {
         allowNull: true,
         type: Sequelize.INTEGER,
         references: {
           model: 'Users',
           key:'id'
         },
+      },
+      payerNames: {
+        allowNull: true,
+        type: Sequelize.STRING,
       },
       amount: {
         allowNull: true,
@@ -45,27 +49,60 @@ module.exports = {
         allowNull: true,
         type: Sequelize.ENUM("M-PESA","CASH","T-KASH","AIRTEL-MONEY","CARD")
       },
+      status: {
+        allowNull: true,
+        type: Sequelize.ENUM("pending","success","failed"),
+        default:'pending'
+      },
       accountNumber: {
         allowNull: true,
         type: Sequelize.STRING
+      },
+      description: {
+        allowNull: true,
+        type: Sequelize.TEXT
       },
       accountReference: {
         allowNull: true,
         type: Sequelize.STRING
       },
-      merchantRequestId: {
+      MerchantRequestID: {
         allowNull: true,
         type: Sequelize.STRING
       },
-      checkoutRequestId: {
+      CheckoutRequestID: {
         allowNull: true,
         type: Sequelize.STRING
       },
-      responseCode: {
+      sourceDocumentNo: {
         allowNull: true,
         type: Sequelize.STRING
       },
-      resultCode: {
+      sourceDocumentType: {
+        allowNull: true,
+        type: Sequelize.STRING
+      },
+      customerNumber: {
+        allowNull: true,
+        type: Sequelize.STRING
+      },
+      ResponseCode: {
+        allowNull: true,
+        type: Sequelize.STRING
+      },
+      ResultCode: {
+        allowNull: true,
+        type: Sequelize.STRING
+      },
+      providerID: {
+        allowNull: true,
+        type: Sequelize.STRING
+      },
+      TransactionReceiptNumber: {
+        allowNull: true,
+        type: Sequelize.STRING
+      },
+      ResultDesc: {
         allowNull: true,
         type: Sequelize.STRING
       },
@@ -81,13 +118,29 @@ module.exports = {
         allowNull: true,
         type: Sequelize.STRING
       },
+      ResponseDescription: {
+        allowNull: true,
+        type: Sequelize.TEXT
+      },
+      CustomerMessage: {
+        allowNull: true,
+        type: Sequelize.TEXT
+      },
       errorCode: {
         allowNull: true,
         type: Sequelize.STRING
       },
-      errorMessage: {
+      requestId: {
         allowNull: true,
         type: Sequelize.STRING
+      },
+      Metadata: {
+        allowNull: true,
+        type: Sequelize.TEXT
+      },
+      errorMessage: {
+        allowNull: true,
+        type: Sequelize.TEXT
       },
       createdAt: {
         allowNull: true,

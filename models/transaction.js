@@ -34,13 +34,17 @@ module.exports = (sequelize, DataTypes) => {
         key:'id'
       },
     },
-    payerId: {
+    payerID: {
       allowNull: true,
       type: DataTypes.INTEGER,
       references: {
         model: 'Users',
         key:'id'
       },
+    },
+    payerNames: {
+      allowNull: true,
+      type: DataTypes.STRING,
     },
     amount: {
       allowNull: true,
@@ -50,27 +54,60 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
       type: DataTypes.ENUM("M-PESA","CASH","T-KASH","AIRTEL-MONEY","CARD")
     },
+    status: {
+      allowNull: true,
+      type: DataTypes.ENUM("pending","success","failed"),
+      default:'pending'
+    },
     accountNumber: {
       allowNull: true,
       type: DataTypes.STRING
+    },
+    description: {
+      allowNull: true,
+      type: DataTypes.TEXT
     },
     accountReference: {
       allowNull: true,
       type: DataTypes.STRING
     },
-    merchantRequestId: {
+    MerchantRequestID: {
       allowNull: true,
       type: DataTypes.STRING
     },
-    checkoutRequestId: {
+    CheckoutRequestID: {
       allowNull: true,
       type: DataTypes.STRING
     },
-    responseCode: {
+    sourceDocumentNo: {
       allowNull: true,
       type: DataTypes.STRING
     },
-    resultCode: {
+    sourceDocumentType: {
+      allowNull: true,
+      type: DataTypes.STRING
+    },
+    customerNumber: {
+      allowNull: true,
+      type: DataTypes.STRING
+    },
+    ResponseCode: {
+      allowNull: true,
+      type: DataTypes.STRING
+    },
+    ResultCode: {
+      allowNull: true,
+      type: DataTypes.STRING
+    },
+    providerID: {
+      allowNull: true,
+      type: DataTypes.STRING
+    },
+    TransactionReceiptNumber: {
+      allowNull: true,
+      type: DataTypes.STRING
+    },
+    ResultDesc: {
       allowNull: true,
       type: DataTypes.STRING
     },
@@ -86,13 +123,29 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
       type: DataTypes.STRING
     },
+    ResponseDescription: {
+      allowNull: true,
+      type: DataTypes.TEXT
+    },
+    CustomerMessage: {
+      allowNull: true,
+      type: DataTypes.TEXT
+    },
     errorCode: {
       allowNull: true,
       type: DataTypes.STRING
     },
-    errorMessage: {
+    requestId: {
       allowNull: true,
       type: DataTypes.STRING
+    },
+    Metadata: {
+      allowNull: true,
+      type: DataTypes.TEXT
+    },
+    errorMessage: {
+      allowNull: true,
+      type: DataTypes.TEXT
     },
   }, {
     sequelize,

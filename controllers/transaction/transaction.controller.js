@@ -3,7 +3,7 @@ const models = require("../../models");
 const Joi = require("joi");
 //
 const TransactionUpSchema=Joi.object().keys({
-    payerId:Joi.number().required(),
+    payerID:Joi.number().required(),
     amount:Joi.number().required(),
     transactionId:Joi.string().required(),
     unitId:Joi.number().required(),
@@ -27,7 +27,7 @@ exports.initiateRentTransaction = async (req,res) =>{
             })
     } else {
         try {
-            const {transactionId, amount,unitId,payerId,accountReference,accountNumber} = body
+            const {transactionId, amount,unitId,payerID,accountReference,accountNumber} = body
             //
             const [transaction,created]=await models
                 .Transaction
@@ -40,7 +40,7 @@ exports.initiateRentTransaction = async (req,res) =>{
                         unitId,
                         accountNumber,
                         amount,
-                        payerId,
+                        payerID,
                         transactionId
                     }
                 })
@@ -53,7 +53,7 @@ exports.initiateRentTransaction = async (req,res) =>{
                     })
             } else{
                 //update transaction
-                transaction.update({amount,accountReference,accountNumber,payerId,unitId})
+                transaction.update({amount,accountReference,accountNumber,payerID,unitId})
                 //
                 return res.status(201)
                     .json({
