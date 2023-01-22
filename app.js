@@ -31,6 +31,8 @@ const tenantRouter=require("./routes/tenant")
 const rentRouter=require("./routes/rent")
 //
 const walletRouter=require("./routes/wallet")
+//transaction
+const transactionRouter=require("./routes/transaction")
 
 const app = express();
 
@@ -72,6 +74,8 @@ app.use(`/api/${version}/tenants`, tenantRouter);
 app.use(`/api/${version}/rents`, rentRouter);
 //wallet
 app.use(`/api/${version}/wallet`, walletRouter);
+//transaction
+app.use(`/api/${version}/transaction`, transactionRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

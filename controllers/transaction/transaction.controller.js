@@ -5,7 +5,7 @@ const Joi = require("joi");
 const TransactionUpSchema=Joi.object().keys({
     payerId:Joi.number().required(),
     amount:Joi.number().required(),
-    transactionId:Joi.number().required(),
+    transactionId:Joi.string().required(),
     unitId:Joi.number().required(),
     accountReference:Joi.string().required(),
     accountNumber:Joi.string().required(),
@@ -23,7 +23,7 @@ exports.initiateRentTransaction = async (req,res) =>{
             .json({
                 success: false,
                 message: 'Invalid transaction request',
-                data: body
+                data: error
             })
     } else {
         try {

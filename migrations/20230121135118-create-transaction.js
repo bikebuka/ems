@@ -10,16 +10,19 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       transactionId: {
+        allowNull: true,
         type: Sequelize.STRING
       },
       transactionCode: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.STRING
       },
       transactionDate: {
+        allowNull: true,
         type: Sequelize.DATE
       },
       unitId: {
+        allowNull: true,
         type: Sequelize.INTEGER,
         references: {
           model: 'Units',
@@ -27,6 +30,7 @@ module.exports = {
         },
       },
       payerId: {
+        allowNull: true,
         type: Sequelize.INTEGER,
         references: {
           model: 'Users',
@@ -34,62 +38,63 @@ module.exports = {
         },
       },
       amount: {
+        allowNull: true,
         type: Sequelize.DOUBLE
       },
       paymentMode: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.ENUM("M-PESA","CASH","T-KASH","AIRTEL-MONEY","CARD")
       },
       accountNumber: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.STRING
       },
       accountReference: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.STRING
       },
       merchantRequestId: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.STRING
       },
       checkoutRequestId: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.STRING
       },
       responseCode: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.STRING
       },
       resultCode: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.STRING
       },
       attachment: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.STRING
       },
       promiseToPay: {
         type: Sequelize.BOOLEAN,
-        default:false
+        default:true
       },
       recipientBankAccountNumber: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.STRING
       },
       errorCode: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.STRING
       },
       errorMessage: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.STRING
       },
       createdAt: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.DATE
       },
       updatedAt: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.DATE
       }
     });

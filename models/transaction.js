@@ -15,16 +15,19 @@ module.exports = (sequelize, DataTypes) => {
   }
   Transaction.init({
     transactionId: {
+      allowNull: true,
       type: DataTypes.STRING
     },
     transactionCode: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.STRING
     },
     transactionDate: {
+      allowNull: true,
       type: DataTypes.DATE
     },
     unitId: {
+      allowNull: true,
       type: DataTypes.INTEGER,
       references: {
         model: 'Units',
@@ -32,6 +35,7 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     payerId: {
+      allowNull: true,
       type: DataTypes.INTEGER,
       references: {
         model: 'Users',
@@ -39,54 +43,55 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     amount: {
+      allowNull: true,
       type: DataTypes.DOUBLE
     },
     paymentMode: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.ENUM("M-PESA","CASH","T-KASH","AIRTEL-MONEY","CARD")
     },
     accountNumber: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.STRING
     },
     accountReference: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.STRING
     },
     merchantRequestId: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.STRING
     },
     checkoutRequestId: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.STRING
     },
     responseCode: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.STRING
     },
     resultCode: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.STRING
     },
     attachment: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.STRING
     },
     promiseToPay: {
       type: DataTypes.BOOLEAN,
-      default:false
+      default:true
     },
     recipientBankAccountNumber: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.STRING
     },
     errorCode: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.STRING
     },
     errorMessage: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.STRING
     },
   }, {
