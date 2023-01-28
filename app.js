@@ -17,6 +17,7 @@ const indexRouter = require('./routes/index');
 const authRouter=require("./routes/auth")
 //users
 const userRouter=require("./routes/user")
+const employeeRouter=require("./routes/employees")
 //agencies
 const agencyRouter = require('./routes/agency');
 //agent
@@ -60,6 +61,8 @@ app.use(`/api/${version}/`, indexRouter);
 app.use(`/api/${version}/auth`, authRouter);
 //users
 app.use(`/api/${version}/users`, userRouter);
+//
+app.use(`/api/${version}/employees`, employeeRouter);
 //agents
 app.use(`/api/${version}/agents`, agentRouter);
 //agencies

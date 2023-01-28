@@ -11,7 +11,7 @@ module.exports = {
       },
       type: {
         allowNull: true,
-        type: Sequelize.ENUM("")
+        type: Sequelize.ENUM("Pending")
       },
       name: {
         type: Sequelize.STRING
